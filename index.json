@@ -21,7 +21,7 @@
     {
       "id": "arabseed",
       "name": "ArabSeed",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
       "file": "arabseed.json",
       "language": "ar"
@@ -32,13 +32,29 @@
       "id": "doodstream",
       "name": "DoodStream",
       "version": "1.0.1",
-      "file": "resolvers/doodstream.json"
+      "file": "resolvers/doodstream.json",
+      "hosts": [
+        "doodstream.*",
+        "dood.*",
+        "dsvplay.*",
+        "playmogo.*",
+        "d000d.*",
+        "ds2play.*",
+        "doodcdn.*"
+      ]
     },
     {
       "id": "mixdrop",
       "name": "Mixdrop",
       "version": "1.0.1",
-      "file": "resolvers/mixdrop.json"
+      "file": "resolvers/mixdrop.json",
+      "hosts": [
+        "mixdrop.*",
+        "*.mixdrop.*",
+        "mxdrop.*",
+        "m1xdrop.*",
+        "mixdrp.*"
+      ]
     }
   ]
 }
