@@ -1,0 +1,14 @@
+{
+  "name": "Sahra Plugins",
+  "format": 1,
+  "plugins": [
+    {
+      "id": "akwam",
+      "name": "Akwam",
+      "version": "1.0.0",
+      "icon": "https://akwam.ss/files/social_logo.png",
+      "file": "akwam.json",
+      "language": "ar"
+    }
+  ]
+}
