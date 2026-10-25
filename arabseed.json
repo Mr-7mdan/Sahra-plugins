@@ -1,0 +1,115 @@
+{
+  "format": 1,
+  "id": "arabseed",
+  "name": "ArabSeed",
+  "version": "1.0.0",
+  "language": "ar",
+  "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
+
+  "address": "https://arabseeds.watch",
+  "fallbackAddresses": ["https://arbsd.net"],
+
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+
+  "requires": ["doodstream", "mixdrop"],
+
+  "notes": "Checked 2026-10-25. Every step reads HTML: the site's WordPress JSON gives titles and links only, no posters, seasons or episodes. Series rows show episode cards; opening one shows its series page. The servers are on the title's /watch/ page: doodstream and mixdrop play through their resolvers, upbom.cam (the site's own server) holds the video in its page. New episodes can have no servers yet.",
+
+  "sections": [
+    { "id": "recent",          "title": "Recently Added",   "titleAr": "أضيف حديثا",       "path": "/recently/page/{page}/" },
+    { "id": "foreign-movies",  "title": "Foreign Movies",   "titleAr": "أفلام أجنبية",     "path": "/category/films/foreign-movies/page/{page}/", "kind": "movie" },
+    { "id": "arabic-movies",   "title": "Arabic Movies",    "titleAr": "أفلام عربية",      "path": "/category/films/arabic-movies/page/{page}/", "kind": "movie" },
+    { "id": "turkish-movies",  "title": "Turkish Movies",   "titleAr": "أفلام تركية",      "path": "/category/films/turkish-movies/page/{page}/", "kind": "movie" },
+    { "id": "indian-movies",   "title": "Indian Movies",    "titleAr": "أفلام هندية",      "path": "/category/films/indian-movies/page/{page}/", "kind": "movie" },
+    { "id": "asian-movies",    "title": "Asian Movies",     "titleAr": "أفلام آسيوية",     "path": "/category/films/asian-movies/page/{page}/", "kind": "movie" },
+    { "id": "foreign-series",  "title": "Foreign Series",   "titleAr": "مسلسلات أجنبية",   "path": "/category/tv/foreign-series/page/{page}/", "kind": "series" },
+    { "id": "arabic-series",   "title": "Arabic Series",    "titleAr": "مسلسلات عربية",    "path": "/category/tv/arabic-series/page/{page}/", "kind": "series" },
+    { "id": "turkish-series",  "title": "Turkish Series",   "titleAr": "مسلسلات تركية",    "path": "/category/tv/turkish-series/page/{page}/", "kind": "series" },
+    { "id": "asian-series",    "title": "Asian Series",     "titleAr": "مسلسلات آسيوية",   "path": "/category/tv/asian-series/page/{page}/", "kind": "series" },
+    { "id": "anime-series",    "title": "Anime Series",     "titleAr": "مسلسلات أنمي",     "path": "/category/anime/anime-series/page/{page}/", "kind": "series" },
+    { "id": "anime-movies",    "title": "Anime Movies",     "titleAr": "أفلام أنمي",       "path": "/category/anime/anime-movies/page/{page}/", "kind": "movie" }
+  ],
+
+  "search": {
+    "path": "/?s={words}"
+  },
+
+  "list": {
+    "each": { "using": "css", "select": "a.movie__block" },
+    "fields": {
+      "title":   { "using": "css", "select": ".post__info h3", "cleanup": [
+        { "replace": "مشاهدة|فيلم|مسلسل|مترجمة|مترجم|الموسم.*$|الحلقة\\s*\\d+|\\b(?:19|20)\\d\\d\\b", "with": "" },
+        { "replace": "\\s+", "with": " " },
+        { "trim": true } ] },
+      "link":    { "using": "css", "take": "href" },
+      "poster":  { "using": "css", "select": ".post__image img", "take": "data-src" },
+      "year":    { "using": "regex", "pattern": "<h3>[^<]*?\\b((?:19|20)\\d\\d)\\b" },
+      "quality": { "using": "css", "select": ".__quality" },
+      "genres":  { "using": "css", "select": ".__genre" },
+      "episode": { "using": "css", "select": ".__number span", "cleanup": [ { "number": true } ] }
+    },
+    "kindRule": [
+      { "linkContains": "%d9%85%d8%b3%d9%84%d8%b3%d9%84", "kind": "series" },
+      { "linkContains": "%D9%85%D8%B3%D9%84%D8%B3%D9%84", "kind": "series" },
+      { "linkContains": "/series/", "kind": "series" }
+    ],
+    "nextPage": { "using": "css", "select": "a.next.page-numbers", "take": "href" }
+  },
+
+  "series": {
+    "title": { "using": "css", "select": "#seasons__list .filter__bttn b", "cleanup": [
+      { "replace": "^\\s*مسلسل\\s+|\\s+الموسم.*$", "with": "" }, { "trim": true } ] },
+    "season": { "using": "css", "select": "#seasons__list li.selected span", "cleanup": [
+      { "replace": "^.*الموسم\\s*", "with": "" },
+      { "map": { "الحادي عشر": "11", "الثاني عشر": "12", "الثالث عشر": "13", "الرابع عشر": "14", "الخامس عشر": "15", "السادس عشر": "16", "السابع عشر": "17", "الثامن عشر": "18", "التاسع عشر": "19", "العشرون": "20", "الأول": "1", "الاول": "1", "الثاني": "2", "الثالث": "3", "الرابع": "4", "الخامس": "5", "السادس": "6", "السابع": "7", "الثامن": "8", "التاسع": "9", "العاشر": "10" } },
+      { "number": true } ] },
+    "plot": { "using": "css", "select": "div.post__story p", "cleanup": [ { "replace": "^\\s*القصه", "with": "" }, { "trim": true } ] },
+    "poster": { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" },
+    "otherSeasons": {
+      "each": { "using": "css", "select": "#seasons__list ul li:not(.selected) a" },
+      "fields": {
+        "title": { "using": "css", "select": "span", "cleanup": [ { "trim": true } ] },
+        "link":  { "using": "css", "take": "href" }
+      }
+    },
+    "episodes": {
+      "each": { "using": "css", "select": "ul.episodes__list li a" },
+      "fields": {
+        "title":   { "using": "css", "select": ".epi__num", "cleanup": [ { "replace": "الحلقة", "with": "الحلقة " }, { "replace": "\\s+", "with": " " }, { "trim": true } ] },
+        "link":    { "using": "css", "take": "href" },
+        "episode": { "using": "css", "select": ".epi__num b", "cleanup": [ { "number": true } ] }
+      }
+    }
+  },
+
+  "details": {
+    "plot":   { "using": "css", "select": "div.post__story p", "cleanup": [ { "replace": "^\\s*القصه", "with": "" }, { "trim": true } ] },
+    "year":   { "using": "css", "select": "a[href*=\"/release-year/\"]", "cleanup": [ { "number": true } ] },
+    "genres": { "using": "css", "select": "a[href*=\"/genre/\"]" },
+    "poster": { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" }
+  },
+
+  "play": {
+    "qualitiesPath": "{link}watch/",
+    "qualities": {
+      "each": { "using": "css", "select": "ul.servers-list li.server-item[data-src]" },
+      "fields": {
+        "label": { "using": "css", "select": "span", "cleanup": [ { "trim": true } ] },
+        "link":  { "using": "css", "take": "data-src" }
+      }
+    },
+    "resolve": [],
+    "sources": {
+      "each": { "using": "css", "select": "video#player source[src]" },
+      "fields": {
+        "url":   { "using": "css", "take": "src" },
+        "label": { "using": "css", "take": "size" }
+      }
+    },
+    "playHeaders": { "Referer": "{origin}/" }
+  },
+
+  "test": { "search": "avatar" }
+}
