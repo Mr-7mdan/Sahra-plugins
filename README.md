@@ -21,7 +21,7 @@ A plugin is one JSON file. It teaches Sahra how to read one website: how to list
 - `search`: the path used for search. `{words}` is what the person typed.
 - `list`: how to read a page full of titles (used by sections and search).
 - `series`: how to read a series page: title, season, story, other seasons and episodes.
-- `details` (optional): extra facts read from a movie or series page: `plot`, `year`, `genres`, a `tmdb` link and an `imdb` link. Each can be one recipe or a list of recipes; Sahra uses the first that finds something. Akwam reads the story from the page's JSON and falls back to its `meta` description.
+- `details` (optional): extra facts read from a movie or series page: `plot`, `year`, `genres`, a `tmdb` link and an `imdb` link, and the page's own `poster` (used when the title was opened without one). Each can be one recipe or a list of recipes; Sahra uses the first that finds something. Akwam reads the story from the page's JSON and falls back to its `meta` description.
 - `play`: how to get from a movie or episode to a video.
 - `test`: a word to search for when checking the plugin works.
 
