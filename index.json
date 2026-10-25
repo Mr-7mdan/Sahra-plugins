@@ -17,6 +17,28 @@
       "icon": "https://fajer.show/wp-content/uploads/2026/02/fajershow_logo.png",
       "file": "fajershow.json",
       "language": "ar"
+    },
+    {
+      "id": "arabseed",
+      "name": "ArabSeed",
+      "version": "1.0.0",
+      "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
+      "file": "arabseed.json",
+      "language": "ar"
+    }
+  ],
+  "resolvers": [
+    {
+      "id": "doodstream",
+      "name": "DoodStream",
+      "version": "1.0.1",
+      "file": "resolvers/doodstream.json"
+    },
+    {
+      "id": "mixdrop",
+      "name": "Mixdrop",
+      "version": "1.0.1",
+      "file": "resolvers/mixdrop.json"
     }
   ]
 }
