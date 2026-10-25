@@ -9,6 +9,14 @@
       "icon": "https://akwam.ss/files/social_logo.png",
       "file": "akwam.json",
       "language": "ar"
+    },
+    {
+      "id": "fajershow",
+      "name": "Fajer Show",
+      "version": "1.0.0",
+      "icon": "https://fajer.show/wp-content/uploads/2026/02/fajershow_logo.png",
+      "file": "fajershow.json",
+      "language": "ar"
     }
   ]
 }
