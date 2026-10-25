@@ -1,0 +1,143 @@
+{
+  "format": 1,
+  "id": "akwam",
+  "name": "Akwam",
+  "version": "1.0.0",
+  "language": "ar",
+  "icon": "https://akwam.ss/files/social_logo.png",
+
+  "address": "https://akwam.ss",
+  "fallbackAddresses": ["https://ak.sv"],
+  "addressFinder": {
+    "request": { "path": "https://akwam.it" },
+    "extract": { "using": "css", "select": "a.link[href*=akwam]", "take": "href" }
+  },
+
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+
+  "notes": "No API (checked 2026-10-25): every step reads HTML. A User-Agent is required, the site refuses requests without one. go.ak.sv is dead: the quality tabs link straight to akwam.ss/watch/... pages, so there is no resolve step.",
+
+  "sections": [
+    { "id": "recent",          "title": "Recently Added",    "titleAr": "أضيف حديثا",         "path": "/recent?page={page}" },
+    { "id": "movies",          "title": "All Movies",        "titleAr": "كل الأفلام",         "path": "/movies?page={page}", "kind": "movie" },
+    { "id": "arabic-movies",   "title": "Arabic Movies",     "titleAr": "أفلام عربية",        "path": "/movies?section=29&page={page}", "kind": "movie" },
+    { "id": "foreign-movies",  "title": "Foreign Movies",    "titleAr": "أفلام أجنبية",       "path": "/movies?section=30&page={page}", "kind": "movie" },
+    { "id": "indian-movies",   "title": "Indian Movies",     "titleAr": "أفلام هندية",        "path": "/movies?section=31&page={page}", "kind": "movie" },
+    { "id": "asian-movies",    "title": "Asian Movies",      "titleAr": "أفلام آسيوية",       "path": "/movies?section=33&page={page}", "kind": "movie" },
+    { "id": "netflix-movies",  "title": "Netflix Movies",    "titleAr": "أفلام NETFLIX",      "path": "/movies?category=72&page={page}", "kind": "movie" },
+    { "id": "anime-movies",    "title": "Anime Movies",      "titleAr": "أفلام أنمي",         "path": "/movies?section=30&category=30&page={page}", "kind": "movie" },
+    { "id": "series",          "title": "All Series",        "titleAr": "كل المسلسلات",       "path": "/series?page={page}", "kind": "series" },
+    { "id": "arabic-series",   "title": "Arabic Series",     "titleAr": "مسلسلات عربية",      "path": "/series?section=29&page={page}", "kind": "series" },
+    { "id": "turkish-series",  "title": "Turkish Series",    "titleAr": "المسلسلات التركية",  "path": "/series?section=32&page={page}", "kind": "series" },
+    { "id": "ramadan-series",  "title": "Ramadan Series",    "titleAr": "مسلسلات رمضان",      "path": "/series?category=87&page={page}", "kind": "series" },
+    { "id": "netflix-series",  "title": "Netflix Series",    "titleAr": "مسلسلات NETFLIX",    "path": "/series?category=72&page={page}", "kind": "series" },
+    { "id": "anime-series",    "title": "Anime Series",      "titleAr": "مسلسلات أنمي",       "path": "/series?category=30&page={page}", "kind": "series" },
+    { "id": "dubbed-series",   "title": "Dubbed Series",     "titleAr": "مسلسلات مدبلجة",     "path": "/series?category=71&page={page}", "kind": "series" },
+    { "id": "plays",           "title": "Plays",             "titleAr": "المسرحيات",          "path": "/shows?section=45&page={page}", "kind": "movie" }
+  ],
+
+  "search": {
+    "path": "/search?q={words}&page={page}"
+  },
+
+  "list": {
+    "each": { "using": "css", "select": "div.entry-box" },
+    "fields": {
+      "title":   { "using": "css", "select": "h3.entry-title a", "cleanup": [ { "trim": true } ] },
+      "link":    { "using": "css", "select": "h3.entry-title a", "take": "href", "cleanup": [ { "absolute": true } ] },
+      "poster":  { "using": "css", "select": ".entry-image img", "take": "data-src", "cleanup": [ { "replace": "/thumb/\\d+x\\d+/", "with": "/" } ] },
+      "year":    { "using": "css", "select": ".badge-secondary", "cleanup": [ { "number": true } ] },
+      "quality": { "using": "css", "select": ".label.quality" },
+      "genres":  { "using": "css", "select": ".badge-light" }
+    },
+    "kindRule": [
+      { "linkContains": "/series/", "kind": "series" },
+      { "linkContains": "/shows/",  "kind": "movie" },
+      { "linkContains": "/movie/",  "kind": "movie" }
+    ],
+    "nextPage": { "using": "css", "select": "a[rel=next]", "take": "href" }
+  },
+
+  "series": {
+    "title": { "using": "css", "select": "h1" },
+    "season": {
+      "using": "css",
+      "select": "h1",
+      "cleanup": [
+        {
+          "map": {
+            "الحادي عشر": "11",
+            "الثاني عشر": "12",
+            "الثالث عشر": "13",
+            "الرابع عشر": "14",
+            "الخامس عشر": "15",
+            "السادس عشر": "16",
+            "السابع عشر": "17",
+            "الثامن عشر": "18",
+            "التاسع عشر": "19",
+            "العشرون": "20",
+            "الأول": "1",
+            "الاول": "1",
+            "الثاني": "2",
+            "الثالث": "3",
+            "الرابع": "4",
+            "الخامس": "5",
+            "السادس": "6",
+            "السابع": "7",
+            "الثامن": "8",
+            "التاسع": "9",
+            "العاشر": "10"
+          }
+        },
+        { "number": true }
+      ]
+    },
+    "plot": {
+      "using": "json",
+      "path": "description",
+      "within": { "using": "css", "select": "script[type=application/ld+json]", "take": "html" }
+    },
+    "otherSeasons": {
+      "each": { "using": "css", "select": ".widget:has(.header-title:contains(مواسم اخرى)) .widget-body a.btn" },
+      "fields": {
+        "title": { "using": "css", "cleanup": [ { "trim": true } ] },
+        "link":  { "using": "css", "take": "href", "cleanup": [ { "absolute": true } ] }
+      }
+    },
+    "episodes": {
+      "each": { "using": "css", "select": ".widget:has(.header-title:contains(الحلقات)) .bg-primary2" },
+      "fields": {
+        "title":   { "using": "css", "select": "h2 a", "cleanup": [ { "trim": true } ] },
+        "link":    { "using": "css", "select": "h2 a", "take": "href", "cleanup": [ { "absolute": true } ] },
+        "poster":  { "using": "css", "select": "img", "take": "src" },
+        "episode": { "using": "css", "select": "h2 a", "cleanup": [ { "number": true } ] }
+      }
+    }
+  },
+
+  "play": {
+    "qualities": {
+      "each": { "using": "css", "select": "ul.header-tabs a[href^=\"#tab-\"]" },
+      "fields": {
+        "label": { "using": "css", "cleanup": [ { "trim": true } ] },
+        "tab":   { "using": "css", "take": "href", "cleanup": [ { "replace": "^#", "with": "" } ] },
+        "link":  { "using": "css", "select": "div#{tab} a.link-show", "take": "href", "scope": "page", "cleanup": [ { "absolute": true } ] },
+        "size":  { "using": "css", "select": "div#{tab} a.link-download span.font-size-14", "scope": "page" }
+      }
+    },
+    "resolve": [],
+    "sources": {
+      "each": { "using": "css", "select": "video#player source" },
+      "fields": {
+        "url":   { "using": "css", "take": "src", "cleanup": [ { "absolute": true } ] },
+        "label": { "using": "css", "take": "size" }
+      }
+    },
+    "hoster": "direct",
+    "playHeaders": {}
+  },
+
+  "test": { "search": "الهيبة" }
+}
