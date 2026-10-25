@@ -1,0 +1,108 @@
+{
+  "format": 1,
+  "id": "fajershow",
+  "name": "Fajer Show",
+  "version": "1.0.0",
+  "language": "ar",
+  "icon": "https://fajer.show/wp-content/uploads/2026/02/fajershow_logo.png",
+
+  "address": "https://fajer.show",
+  "fallbackAddresses": ["https://show.alfajertv.com"],
+
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+
+  "notes": "AlfajerTV's film site (checked 2026-10-25); show.alfajertv.com is the same site. Sections, search, series and details read HTML. The video comes from the site's player API: a POST to /wp-admin/admin-ajax.php (action doo_player_ajax) with the page's postId, which answers with the player frame; its ?source= is the mp4 on the site's own server (hadara.ps). There is no GET route for it (wp-json/dooplayer is not installed), so Play reads the title page once more for the postId. Only server 1 is listed: servers 2-4 are ok.ru, doodstream and streamtape, which need resolvers Sahra does not have yet. Server 1's frame is either the site's jwplayer page (mp4 in ?source=) or the mp4 itself; for some plays it is a fajer.live page with no video, and those fail at Play. A series page holds every season; the app splits it per season.",
+
+  "sections": [
+    { "id": "english-movies", "title": "English Movies", "titleAr": "أفلام أجنبية",   "path": "/genre/english-movies/page/{page}/", "kind": "movie" },
+    { "id": "arabic-movies",  "title": "Arabic Movies",  "titleAr": "أفلام عربية",    "path": "/genre/arabic-movies/page/{page}/",  "kind": "movie" },
+    { "id": "turkish-movies", "title": "Turkish Movies", "titleAr": "أفلام تركية",    "path": "/genre/turkish-movies/page/{page}/", "kind": "movie" },
+    { "id": "indian-movies",  "title": "Indian Movies",  "titleAr": "أفلام هندية",    "path": "/genre/indian-movies/page/{page}/",  "kind": "movie" },
+    { "id": "animation",      "title": "Animation",      "titleAr": "أفلام كرتون",    "path": "/genre/animation/page/{page}/",      "kind": "movie" },
+    { "id": "plays",          "title": "Plays",          "titleAr": "مسرحيات",        "path": "/genre/plays/page/{page}/",          "kind": "movie" },
+    { "id": "english-series", "title": "English Series", "titleAr": "مسلسلات أجنبية", "path": "/genre/english-series/page/{page}/", "kind": "series" },
+    { "id": "arabic-series",  "title": "Arabic Series",  "titleAr": "مسلسلات عربية",  "path": "/genre/arabic-series/page/{page}/",  "kind": "series" },
+    { "id": "turkish-series", "title": "Turkish Series", "titleAr": "مسلسلات تركية",  "path": "/genre/turkish-series/page/{page}/", "kind": "series" },
+    { "id": "ramadan-2026",   "title": "Ramadan 2026",   "titleAr": "رمضان 2026",     "path": "/genre/ramadan2026/page/{page}/",    "kind": "series" }
+  ],
+
+  "search": {
+    "path": "/?s={words}"
+  },
+
+  "list": {
+    "each": { "using": "css", "select": "a.item-card" },
+    "fields": {
+      "title":  { "using": "css", "select": "h3", "cleanup": [ { "trim": true } ] },
+      "link":   { "using": "css", "take": "href", "cleanup": [ { "absolute": true } ] },
+      "poster": { "using": "css", "select": ".card-poster img", "take": "src" },
+      "year":   { "using": "css", "select": "span.year-badge", "cleanup": [ { "number": true } ] }
+    },
+    "kindRule": [
+      { "linkContains": "/tvshows/", "kind": "series" },
+      { "linkContains": "/episodes/", "kind": "episode" },
+      { "linkContains": "/movies/",  "kind": "movie" }
+    ],
+    "nextPage": { "using": "css", "select": "a.next.page-numbers", "take": "href" }
+  },
+
+  "series": {
+    "title": { "using": "css", "select": "h1" },
+    "plot":  { "using": "css", "select": "div.single-description" },
+    "poster": { "using": "css", "select": "div.single-poster img", "take": "src", "cleanup": [ { "replace": "-\\d+x\\d+(\\.\\w+)$", "with": "$1" } ] },
+    "episodes": {
+      "each": { "using": "css", "select": "div.season-episodes a.episode-card" },
+      "fields": {
+        "title":   { "using": "css", "select": "h4", "cleanup": [ { "trim": true } ] },
+        "link":    { "using": "css", "take": "href", "cleanup": [ { "absolute": true } ] },
+        "poster":  { "using": "css", "select": "img", "take": "src" },
+        "season":  { "using": "css", "select": "span.episode-number", "cleanup": [ { "replace": "^\\s*(\\d+)\\s*x.*$", "with": "$1" } ] },
+        "episode": { "using": "css", "select": "span.episode-number", "cleanup": [ { "replace": "^.*x\\s*(\\d+)\\s*$", "with": "$1" } ] }
+      }
+    }
+  },
+
+  "details": {
+    "plot":   { "using": "css", "select": "div.single-description" },
+    "year":   { "using": "css", "select": "div.single-meta span.year", "cleanup": [ { "number": true } ] },
+    "genres": { "using": "css", "select": "div.single-genres a" },
+    "poster": { "using": "css", "select": "div.single-poster img", "take": "src", "cleanup": [ { "replace": "-\\d+x\\d+(\\.\\w+)$", "with": "$1" } ] }
+  },
+
+  "play": {
+    "qualities": {
+      "each": { "using": "css", "select": "button.server-btn[data-server=1]" },
+      "fields": {
+        "label": { "using": "css", "select": ".server-name", "cleanup": [ { "trim": true } ] },
+        "link":  { "using": "redirect" }
+      }
+    },
+    "resolve": [
+      {
+        "as": "postId",
+        "request": { "path": "{link}" },
+        "extract": { "using": "regex", "pattern": "var postId = (\\d+)" }
+      },
+      {
+        "request": {
+          "method": "POST",
+          "path": "/wp-admin/admin-ajax.php",
+          "headers": { "Referer": "{link}", "X-Requested-With": "XMLHttpRequest" },
+          "body": { "type": "form", "fields": { "action": "doo_player_ajax", "post": "{postId}", "type": "movie", "nume": "1" } }
+        }
+      }
+    ],
+    "sources": {
+      "each": { "using": "css", "select": "iframe" },
+      "fields": {
+        "url": { "using": "regex", "pattern": "(?:[?&](?:amp;)?source=|src=['\"])(https?(?::|%3A)[^?&'\"]+\\.(?:mp4|m3u8))", "cleanup": [ { "decode": "url" } ] }
+      }
+    },
+    "hoster": "direct",
+    "playHeaders": {}
+  },
+
+  "test": { "search": "حب" }
+}
