@@ -2,7 +2,7 @@
   "format": 1,
   "id": "akwam",
   "name": "Akwam",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "language": "ar",
   "icon": "https://akwam.ss/files/social_logo.png",
 
@@ -129,7 +129,15 @@
     "year":   { "using": "css", "select": "span:contains(السنة)", "cleanup": [ { "number": true } ] },
     "genres": { "using": "css", "select": "a.badge.badge-light" },
     "tmdb":   { "using": "css", "select": "a[href*=\"themoviedb.org/\"]", "take": "href" },
-    "imdb":   { "using": "css", "select": "a[href*=\"imdb.com/title/\"]", "take": "href" }
+    "imdb":   { "using": "css", "select": "a[href*=\"imdb.com/title/\"]", "take": "href" },
+    "poster": [
+      {
+        "using": "json",
+        "path": "image[0]",
+        "within": { "using": "css", "select": "script[type=application/ld+json]", "take": "html" }
+      },
+      { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" }
+    ]
   },
 
   "play": {
