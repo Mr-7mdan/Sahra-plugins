@@ -2,7 +2,7 @@
   "format": 1,
   "id": "arabseed",
   "name": "ArabSeed",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "language": "ar",
   "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
 
@@ -15,7 +15,7 @@
 
   "requires": ["doodstream", "mixdrop"],
 
-  "notes": "Checked 2026-10-25. Every step reads HTML: the site's WordPress JSON gives titles and links only, no posters, seasons or episodes. Series rows show episode cards; opening one shows its series page. The servers are on the title's /watch/ page: doodstream and mixdrop play through their resolvers, upbom.cam (the site's own server) holds the video in its page. New episodes can have no servers yet.",
+  "notes": "Checked 2026-10-25. Every step reads HTML: the site's WordPress JSON gives titles and links only, no posters, seasons or episodes. Series rows show episode cards; opening one shows its series page. The servers are on the title's /watch/ page: doodstream and mixdrop play through their resolvers, upbom.cam (the site's own server) holds the video in its page, so its servers are marked “direct” (no resolver needed). The watch page gives no quality per server: data-quality is only 0 or 1, and a “1” server's qualities come from the site's /get_quality.php, which Sahra does not read. New episodes can have no servers yet.",
 
   "sections": [
     { "id": "recent",          "title": "Recently Added",   "titleAr": "أضيف حديثا",       "path": "/recently/page/{page}/" },
@@ -97,7 +97,10 @@
       "each": { "using": "css", "select": "ul.servers-list li.server-item[data-src]" },
       "fields": {
         "label": { "using": "css", "select": "span", "cleanup": [ { "trim": true } ] },
-        "link":  { "using": "css", "take": "data-src" }
+        "link":  { "using": "css", "take": "data-src" },
+        "resolver": { "using": "css", "take": "data-src", "cleanup": [
+          { "replace": "^https?://(?:[^/]*\\.)?upbom\\.cam/.*$", "with": "direct" },
+          { "replace": "^(?!direct$).*$", "with": "" } ] }
       }
     },
     "resolve": [],
