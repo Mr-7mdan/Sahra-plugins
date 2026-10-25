@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "doodstream",
+  "name": "DoodStream",
+  "version": "1.0.1",
+  "hosts": ["doodstream.*", "dood.*", "dsvplay.*", "playmogo.*", "d000d.*", "ds2play.*", "doodcdn.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-25 on an Arabseed embed (doodstream.com/e/ID, which redirects to playmogo.com). API: the embed page names /pass_md5/…, which answers with the start of the video address; the page adds 10 random letters, ?token=…&expiry= and the time in milliseconds. Sahra uses fixed letters (the server does not check them). The page's Turnstile only guards an analytics call.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
+      "extract": { "using": "regex", "pattern": "\\$\\.get\\('(/pass_md5/[^']+)'" },
+      "as": "md5",
+      "keep": {
+        "token": { "using": "regex", "pattern": "return\\s*a\\s*\\+\\s*\"(\\?token=[^\"]+)\"" },
+        "embed": { "using": "redirect" }
+      } },
+    { "request": { "path": "{md5}", "headers": { "Referer": "{embed}" } },
+      "extract": { "using": "regex", "pattern": "^\\s*(https?://\\S+?)\\s*$" },
+      "as": "base" },
+    { "request": { "path": "{base}SahraPlay0{token}{now}", "headers": { "Referer": "{origin}/" } } }
+  ],
+  "sources": { "each": { "using": "redirect" }, "fields": { "url": { "using": "redirect" } } },
+  "playHeaders": { "Referer": "{origin}/" },
+  "test": { "link": "https://doodstream.com/e/ae9wpfsn2m6t" }
+}
