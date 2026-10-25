@@ -78,6 +78,7 @@ A field can use `{name}` in its `select`, where `name` is another field of the s
 - `nextPage` (in `list`): a recipe that finds the "next page" link. If it finds nothing, Sahra knows there are no more pages.
 - `within` (inside a recipe): first read some text with the recipe inside `within`, then run this recipe on that text. Akwam uses it to pull the story out of the JSON hidden in a `script` tag: `within` finds the script, and `using: json` with `path: description` reads the story.
 - `qualitiesPath` (in `play`, optional): the page the servers are listed on, when it is not the title's own page. Arabseed lists them on the title's watch page: `"qualitiesPath": "{link}watch/"`.
+- `quality`, `source`, `resolver` (optional fields of `play.qualities`): the server's quality ("1080", "FHD"…), its name or host, and the resolver that plays it when its address changes too often for `hosts` (it must be in `requires`), or `direct` for a server on another site that the plugin's own steps can play. Servers no resolver can play are still listed, dimmed, so the owner can see which resolvers to add.
 - `qualitiesSteps` (in `play`, optional): when reaching the server list takes more than one page, the steps to get there, written like `resolve` steps; the servers are read from the last one. AsiaTVDrama opens the episode, reads its form's address and episode number, then asks the site's API for the servers.
 - `[*]` in a `json` path: every item of a list, or every entry of an object. An entry has a `key` (its name) and a `value`, so `"path": "servers[*]"` with `label` read from `key` lists `{"servers": {"Ok.ru": "…", "VEO": "…"}}` as two servers, in name order.
 - `resolve` (in `play`): extra pages to open between the chosen quality and the video. Akwam needs none, so it is `[]`. A step has a `request` (with a `path`) and may have an `extract` and an `as` name to pass its result on as `{name}`. To keep more than one value from the same page, add `keep`: `"keep": { "token": { "using": "regex", "pattern": "token=(\\w+)" } }` makes `{token}` (any name except the ones Sahra fills itself: `link`, `origin`, `address`, `previous`, `page`, `words`, `now`). `{now}` is the current time in milliseconds, for addresses that carry it.
@@ -90,7 +91,7 @@ A field can use `{name}` in its `select`, where `name` is another field of the s
 Many sites send their videos to the same video hosts (mixdrop, doodstream, voe…). A **resolver** teaches Sahra one such host once, so every plugin can use it. It is its own small file in `resolvers/`, listed in `index.json` under `resolvers`:
 
 ```json
-"resolvers": [ { "id": "mixdrop", "version": "1.0.0", "file": "resolvers/mixdrop.json" } ]
+"resolvers": [ { "id": "mixdrop", "version": "1.0.0", "file": "resolvers/mixdrop.json", "hosts": ["mixdrop.*"] } ]
 ```
 
 A plugin names the resolvers it needs:
