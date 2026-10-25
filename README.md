@@ -62,6 +62,8 @@ Each list needs certain fields:
 
 An item missing a required field is skipped.
 
+When a series page lists every season at once (Fajer Show does), give each episode a `season` field and leave out `otherSeasons`: Sahra shows that page one season at a time (the first one listed to start with) and offers the others as its other seasons.
+
 A field can use `{name}` in its `select`, where `name` is another field of the same item. Sahra reads that other field first and puts its value in. In Akwam, the `tab` field holds the id of a quality tab, and `link` uses `div#{tab} a.link-show` to find that tab's watch link. Because the tab lives outside the quality's own block, those fields also say `"scope": "page"`, which means "read the whole page, not just this block".
 
 ## The other keys, in plain words
