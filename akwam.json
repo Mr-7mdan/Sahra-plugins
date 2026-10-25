@@ -2,7 +2,7 @@
   "format": 1,
   "id": "akwam",
   "name": "Akwam",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "language": "ar",
   "icon": "https://akwam.ss/files/social_logo.png",
 
@@ -47,7 +47,7 @@
     "fields": {
       "title":   { "using": "css", "select": "h3.entry-title a", "cleanup": [ { "trim": true } ] },
       "link":    { "using": "css", "select": "h3.entry-title a", "take": "href", "cleanup": [ { "absolute": true } ] },
-      "poster":  { "using": "css", "select": ".entry-image img", "take": "data-src", "cleanup": [ { "replace": "/thumb/\\d+x\\d+/", "with": "/" } ] },
+      "poster":  { "using": "css", "select": ".entry-image img", "take": "data-src", "cleanup": [ { "replace": "/thumb/\\d+x\\d+/", "with": "/thumb/356x520/" } ] },
       "year":    { "using": "css", "select": ".badge-secondary", "cleanup": [ { "number": true } ] },
       "quality": { "using": "css", "select": ".label.quality" },
       "genres":  { "using": "css", "select": ".badge-light" }
@@ -134,9 +134,11 @@
       {
         "using": "json",
         "path": "image[0]",
-        "within": { "using": "css", "select": "script[type=application/ld+json]", "take": "html" }
+        "within": { "using": "css", "select": "script[type=application/ld+json]", "take": "html" },
+        "cleanup": [ { "replace": "^(https?://[^/]+)/uploads/", "with": "$1/thumb/600x880/uploads/" } ]
       },
-      { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" }
+      { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content",
+        "cleanup": [ { "replace": "^(https?://[^/]+)/uploads/", "with": "$1/thumb/600x880/uploads/" } ] }
     ]
   },
 
