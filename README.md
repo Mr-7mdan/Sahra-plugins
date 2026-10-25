@@ -17,10 +17,11 @@ A plugin is one JSON file. It teaches Sahra how to read one website: how to list
 - `addressFinder`: a last resort. It opens another page (a portal) and reads the new address from it.
 - `headers`: extra details sent with every request. The `User-Agent` tells the site we are a normal browser. Some sites refuse requests without it.
 - `notes`: anything you want to remember. Sahra ignores it.
-- `sections`: the rows on the plugin's page. Each has an `id`, a `title`, an Arabic `titleAr`, and a `path`. `{page}` in the path becomes 1, 2, 3 as people scroll.
+- `sections`: the rows on the plugin's page. Each has an `id`, a `title`, an Arabic `titleAr`, and a `path`. `{page}` in the path is the page number. For now Sahra's rows only load the first page, so it becomes 1.
 - `search`: the path used for search. `{words}` is what the person typed.
 - `list`: how to read a page full of titles (used by sections and search).
 - `series`: how to read a series page: title, season, story, other seasons and episodes.
+- `details` (optional): extra facts read from a movie or series page: `plot`, `year`, `genres`, a `tmdb` link and an `imdb` link. Each can be one recipe or a list of recipes; Sahra uses the first that finds something. Akwam reads the story from the page's JSON and falls back to its `meta` description.
 - `play`: how to get from a movie or episode to a video.
 - `test`: a word to search for when checking the plugin works.
 
