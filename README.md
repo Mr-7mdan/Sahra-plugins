@@ -58,6 +58,7 @@ Every value is read with a small recipe. A recipe has `using`, and often `take` 
 - `number`: keep only the first number.
 - `map`: swap words for other words, like Arabic "الخامس" for "5".
 - `decode`: undo an encoding. You must say which kind: `{ "decode": "base64" }`, `{ "decode": "html" }` or `{ "decode": "url" }`.
+  - `{ "decode": "byse" }` is built in for one video host: BySE and FileMoon (one backend) send their list of streams encrypted, and this unlocks it. Give it the host's `/api/videos/…` answer (or its `playback` part); it gives back the plain answer, whose `sources[].url` is the video. If it can't unlock it, the step fails and says so. A file that uses it says `"format": 2`.
 - `unpack`: read a packed script (the kind that starts `eval(function(p,a,c,k,e,d)`) as plain text, without running it. Use `{ "unpack": true }`. If the script is packed some other way, the step fails and says so.
 - `rot13`: undo ROT13, where every letter is moved 13 places. `{ "rot13": true }`.
 - `reverse`: turn the text back to front. `{ "reverse": true }`.
