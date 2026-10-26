@@ -2,7 +2,7 @@
   "format": 2,
   "id": "egydead",
   "name": "EgyDead",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "language": "ar",
   "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
 
@@ -18,7 +18,7 @@
 
   "requires": ["vidmoly", "mixdrop", "doodstream", "streamwish", "voe", "uqload"],
 
-  "notes": "Checked 2026-10-26. egydead.fyi (the site's own portal, unchallenged; it keeps the path), egydead.rip and w.egydead.live all move to tv10.egydead.live; when the number moves on and they fail, the probe counts up tv{n}.egydead.live (/home/ answers 200, / redirects). Lists, search, series, season and episode pages are HTML (WordPress; its wp-json lists movies only, not series or episodes). Series sections list their newest episodes and seasons; the list's series field makes one card per show and season, linking to that season's page (built from the episode's link: {address}/seasons/<show>-sNN/; the site redirects a guessed slug to the real one); an episode's or series' page has no episode list, so seasonPage follows its link to the season page. The servers come from the MegaMax player's own API: the watch page ({link}watch/) names the player page, whose Inertia JSON lists each stream (816p, 720p, 480p) with its mirrors. One row per mirror. VidMoly, MixDrop, DoodStream, EarnVids (StreamWish), VOE and Uqload play; StreamRuby, Vidara and BySE have no resolver yet and show as “Get resolver”.",
+  "notes": "Checked 2026-10-26. egydead.fyi (the site's own portal, unchallenged; it keeps the path), egydead.rip and w.egydead.live all move to tv10.egydead.live; when the number moves on and they fail, the probe counts up tv{n}.egydead.live (/home/ answers 200, / redirects). Lists, search, series, season and episode pages are HTML (WordPress; its wp-json lists movies only, not series or episodes). Series sections list their newest episodes and seasons; the list's series field makes one card per show and season, linking to that season's page (built from the episode's link: {address}/seasons/<show>-sNN/; the site redirects a guessed slug to the real one); an episode's or series' page has no episode list, so seasonPage follows its link to the season page. The servers come from the MegaMax player's own API: the watch page ({link}watch/) names the player page, whose Inertia JSON lists each stream (816p, 720p, 480p) with its mirrors. One row per mirror. VidMoly, MixDrop, DoodStream, EarnVids (StreamWish), VOE and Uqload play; StreamRuby, Vidara and BySE have no resolver yet and show as “Get resolver”. Many films are listed twice, the Arabic-dubbed version (its own page, address ending -ar, title ending مدبلج) beside the subtitled one (title ending مترجم); the title cleanup takes both words off, so the list's quality field reads مدبلج from the dubbed one's title and shows it under the card.",
 
   "titleStrip": ["مترجم و مدبلج", "مترجمة و مدبلجة"],
 
@@ -50,6 +50,9 @@
       "link":   { "using": "css", "select": "a", "take": "href" },
       "poster": { "using": "css", "select": "img", "take": "src", "cleanup": [ { "replace": "-\\d+x\\d+(\\.[A-Za-z]+)$", "with": "$1" } ] },
       "year":   { "using": "css", "select": "a", "take": "title", "cleanup": [ { "replace": "^.*?\\b((?:19|20)\\d\\d)\\b.*$", "with": "$1" } ] },
+      "quality": { "using": "css", "select": "a", "take": "title", "cleanup": [
+        { "replace": "^(?!.*مترجمة?\\s+و\\s*مدبلج).*\\sمدبلج[ةه]?\\s*$", "with": "مدبلج" },
+        { "replace": "^(?!مدبلج$).*$", "with": "" } ] },
       "series": { "using": "css", "select": "a", "take": "href", "cleanup": [ { "replace": "^(https?://[^/]+)/(?:episodes|seasons)/(.+?-s\\d+)(?:e\\d+)?(-ar)?/?$", "with": "$1/seasons/$2$3/" } ] }
     },
     "kindRule": [
