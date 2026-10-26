@@ -131,6 +131,8 @@ A plugin names the resolvers it needs:
 "requires": ["mixdrop"]
 ```
 
+**Rule: a plugin lists every resolver its site's servers need.** Look at the servers of a few recent titles and see which video sites they really point to (the button's name is not enough: a server called "DW" can be a VK video). If there is a resolver for that video site, put it in `requires`. When a new resolver is added, go through the plugins again: any plugin whose servers use that video site gets it in `requires`, a new version number, and the same number in `index.json`.
+
 When someone installs the plugin, Sahra installs its resolvers too, from whichever repository has the highest version. Two plugins that need the same resolver share one copy. It is removed when the last plugin that needs it is removed. Resolvers update on their own, like plugins.
 
 When a plugin reaches a link on a host a resolver handles, Sahra hands that link to the resolver. This can be the quality link, a link a `resolve` step found, or a link `sources` found. The resolver turns it into the video.
@@ -166,6 +168,17 @@ A resolver file looks like this:
 - `test.link`: a link that should keep working. Sahra tries it when the resolver is installed and whenever a new version arrives. If it fails, every plugin that requires this resolver shows its play check in red, until a version that works is published. If the video behind the link has simply been deleted, Sahra only shows a warning (the plugin stays green): replace the link with a new one.
 
 Bump the resolver's `version` after every change, and in `index.json` too.
+
+**A host that can't be played.** Some hosts never hand Sahra the real video (BigWarp gives every app the same short decoy clip). Mark such a host with a resolver that only says why:
+
+```json
+{ "format": 2, "id": "bigwarp", "name": "BigWarp", "version": "1.0.0", "hosts": ["bigwarp.*"],
+  "unsupported": "it gives every app the same short decoy clip instead of the episode" }
+```
+
+Its servers then say "BigWarp can't be played: …" instead of trying.
+
+**When no resolver fits.** For a server on a video host with no resolver, or whose resolver fails, Sahra tries a generic one: it reads the host's page, unpacks a packed script, and plays the first video address it finds. It is never used for the plugin's own site pages, nor for a host marked unsupported. It's a safety net, not a replacement: write a resolver for any host a site really uses.
 
 ## Common fixes
 
