@@ -1,8 +1,8 @@
 {
-  "format": 1,
+  "format": 2,
   "id": "arabseed",
   "name": "ArabSeed",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "language": "ar",
   "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
 
@@ -15,7 +15,7 @@
 
   "requires": ["doodstream", "mixdrop"],
 
-  "notes": "Checked 2026-10-25. Every step reads HTML: the site's WordPress JSON gives titles and links only, no posters, seasons or episodes. Series rows show episode cards; opening one shows its series page. The servers are on the title's /watch/ page: doodstream and mixdrop play through their resolvers, upbom.cam (the site's own server) holds the video in its page, so its servers are marked “direct” (no resolver needed). The watch page gives no quality per server: data-quality is only 0 or 1, and a “1” server's qualities come from the site's /get_quality.php, which Sahra does not read. New episodes can have no servers yet.",
+  "notes": "Checked 2026-10-25. Every step reads HTML: the site's WordPress JSON gives titles and links only, no posters, seasons or episodes. Series rows show one card per show and season (the list's series field: the card title without its episode number); opening one shows its series page, and the library keeps the card under that season's /series/ page (series.link), not the episode it linked to. The servers are on the title's /watch/ page: doodstream and mixdrop play through their resolvers, upbom.cam (the site's own server) holds the video in its page, so its servers are marked “direct” (no resolver needed). The watch page gives no quality per server: data-quality is only 0 or 1, and a “1” server's qualities come from the site's /get_quality.php, which Sahra does not read. New episodes can have no servers yet.",
 
   "sections": [
     { "id": "recent",          "title": "Recently Added",   "titleAr": "أضيف حديثا",       "path": "/recently/page/{page}/" },
@@ -48,7 +48,8 @@
       "year":    { "using": "regex", "pattern": "<h3>[^<]*?\\b((?:19|20)\\d\\d)\\b" },
       "quality": { "using": "css", "select": ".__quality" },
       "genres":  { "using": "css", "select": ".__genre" },
-      "episode": { "using": "css", "select": ".__number span", "cleanup": [ { "number": true } ] }
+      "episode": { "using": "css", "select": ".__number span", "cleanup": [ { "number": true } ] },
+      "series":  { "using": "css", "select": ".post__info h3", "cleanup": [ { "replace": "\\s*الحلقة.*$", "with": "" }, { "trim": true } ] }
     },
     "kindRule": [
       { "linkContains": "%d9%85%d8%b3%d9%84%d8%b3%d9%84", "kind": "series" },
@@ -61,6 +62,7 @@
   "series": {
     "title": { "using": "css", "select": "#seasons__list .filter__bttn b", "cleanup": [
       { "replace": "^\\s*مسلسل\\s+|\\s+الموسم.*$", "with": "" }, { "trim": true } ] },
+    "link": { "using": "css", "select": "#seasons__list li.selected a", "take": "href" },
     "season": { "using": "css", "select": "#seasons__list li.selected span", "cleanup": [
       { "replace": "^.*الموسم\\s*", "with": "" },
       { "map": { "الحادي عشر": "11", "الثاني عشر": "12", "الثالث عشر": "13", "الرابع عشر": "14", "الخامس عشر": "15", "السادس عشر": "16", "السابع عشر": "17", "الثامن عشر": "18", "التاسع عشر": "19", "العشرون": "20", "الأول": "1", "الاول": "1", "الثاني": "2", "الثالث": "3", "الرابع": "4", "الخامس": "5", "السادس": "6", "السابع": "7", "الثامن": "8", "التاسع": "9", "العاشر": "10" } },
