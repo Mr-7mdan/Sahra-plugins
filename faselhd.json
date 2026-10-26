@@ -1,0 +1,377 @@
+{
+  "format": 2,
+  "id": "faselhd",
+  "name": "FaselHD",
+  "version": "1.0.1",
+  "language": "ar",
+  "icon": "https://static.faselhdcdn.com/wp-content/themes/faselhd_2020/images/favicon.png",
+  "address": "https://web10260x.faselhdx.life",
+  "fallbackAddresses": [],
+  "addressFinder": {
+    "probe": {
+      "address": "https://web{n}x.faselhdx.life",
+      "path": "/main",
+      "tries": 50,
+      "every": 3
+    },
+    "solveOnce": {
+      "portal": "https://www.fasel-hd.co/main",
+      "accept": "web*x.faselhdx.life"
+    }
+  },
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26. No API: lists, search, series and title pages are HTML. The site moves by bumping the number in web<N>x.faselhdx.life; every other label and every public mirror redirects to a Cloudflare-challenged portal, so the address probe counts up from the last label that worked (one try every 3 s, at most 50). The title page lists servers (video_player?player_token=...); Each server's player page runs its own scripts in the app's sandbox: every quality button (auto, 1080p, 720p, 360p; HLS on scdns.io) is a row, and Play runs the page again and takes that button. The stream is signed for the IP that read the player page, so it can't be cached. The video server is given the player page as Referer. 429 if requests burst.",
+  "sections": [
+    {
+      "id": "recent",
+      "title": "Recently Added",
+      "titleAr": "المضاف حديثا",
+      "path": "/most_recent/page/{page}"
+    },
+    {
+      "id": "movies",
+      "title": "Foreign Movies",
+      "titleAr": "أفلام أجنبي",
+      "path": "/movies/page/{page}",
+      "kind": "movie"
+    },
+    {
+      "id": "all-movies",
+      "title": "All Movies",
+      "titleAr": "كل الأفلام",
+      "path": "/all-movies/page/{page}",
+      "kind": "movie"
+    },
+    {
+      "id": "dubbed-movies",
+      "title": "Dubbed Movies",
+      "titleAr": "أفلام مدبلجة",
+      "path": "/dubbed-movies/page/{page}",
+      "kind": "movie"
+    },
+    {
+      "id": "hindi-movies",
+      "title": "Indian Movies",
+      "titleAr": "أفلام هندي",
+      "path": "/hindi/page/{page}",
+      "kind": "movie"
+    },
+    {
+      "id": "asian-movies",
+      "title": "Asian Movies",
+      "titleAr": "أفلام آسيوي",
+      "path": "/asian-movies/page/{page}",
+      "kind": "movie"
+    },
+    {
+      "id": "anime-movies",
+      "title": "Anime Movies",
+      "titleAr": "أفلام أنمي",
+      "path": "/anime-movies/page/{page}",
+      "kind": "movie"
+    },
+    {
+      "id": "series",
+      "title": "Foreign Series",
+      "titleAr": "مسلسلات أجنبي",
+      "path": "/series/page/{page}",
+      "kind": "series"
+    },
+    {
+      "id": "asian-series",
+      "title": "Asian Series",
+      "titleAr": "مسلسلات آسيوي",
+      "path": "/asian-series/page/{page}",
+      "kind": "series"
+    },
+    {
+      "id": "anime",
+      "title": "Anime",
+      "titleAr": "أنمي",
+      "path": "/anime/page/{page}",
+      "kind": "series"
+    },
+    {
+      "id": "tvshows",
+      "title": "TV Programs",
+      "titleAr": "برامج",
+      "path": "/tvshows/page/{page}",
+      "kind": "series"
+    }
+  ],
+  "search": {
+    "path": "/?s={words}"
+  },
+  "list": {
+    "each": {
+      "using": "css",
+      "select": "div.postDiv"
+    },
+    "fields": {
+      "title": {
+        "using": "css",
+        "select": "div.h1",
+        "cleanup": [
+          {
+            "replace": "\\s+الموسم\\s+\\S+\\s*$",
+            "with": ""
+          }
+        ]
+      },
+      "link": {
+        "using": "css",
+        "select": "a",
+        "take": "href"
+      },
+      "poster": {
+        "using": "css",
+        "select": "img.lazy",
+        "take": "data-src",
+        "cleanup": [
+          {
+            "replace": "\\?.*$",
+            "with": ""
+          },
+          {
+            "replace": "-\\d+x\\d+\\.",
+            "with": "."
+          }
+        ]
+      },
+      "year": {
+        "using": "css",
+        "select": "div.h1",
+        "cleanup": [
+          {
+            "replace": "^.*?((?:19|20)\\d\\d).*$",
+            "with": "$1"
+          }
+        ]
+      },
+      "quality": {
+        "using": "css",
+        "select": "span.quality"
+      },
+      "genres": {
+        "using": "css",
+        "select": "span.cat"
+      }
+    },
+    "kindRule": [
+      {
+        "linkContains": "episodes/",
+        "kind": "episode"
+      },
+      {
+        "linkContains": "/series/",
+        "kind": "series"
+      },
+      {
+        "linkContains": "/seasons/",
+        "kind": "series"
+      },
+      {
+        "linkContains": "/asian-series/",
+        "kind": "series"
+      },
+      {
+        "linkContains": "/anime/",
+        "kind": "series"
+      },
+      {
+        "linkContains": "/tvshows/",
+        "kind": "series"
+      },
+      {
+        "linkContains": "/movies/",
+        "kind": "movie"
+      },
+      {
+        "linkContains": "-movies/",
+        "kind": "movie"
+      },
+      {
+        "linkContains": "/hindi/",
+        "kind": "movie"
+      }
+    ],
+    "nextPage": {
+      "using": "css",
+      "select": "a.page-link:contains(›)",
+      "take": "href"
+    }
+  },
+  "series": {
+    "title": {
+      "using": "css",
+      "select": "h1.h1.title",
+      "cleanup": [
+        {
+          "replace": "مسلسل|الموسم.*$",
+          "with": ""
+        },
+        {
+          "trim": true
+        }
+      ]
+    },
+    "season": {
+      "using": "css",
+      "select": "div.seasonDiv.active div.title",
+      "cleanup": [
+        {
+          "number": true
+        }
+      ]
+    },
+    "plot": {
+      "using": "css",
+      "select": "div.singleDesc p"
+    },
+    "otherSeasons": {
+      "each": {
+        "using": "css",
+        "select": "div.seasonDiv"
+      },
+      "fields": {
+        "title": {
+          "using": "css",
+          "select": "div.title",
+          "cleanup": [
+            {
+              "trim": true
+            }
+          ]
+        },
+        "link": {
+          "using": "regex",
+          "pattern": "window\\.location\\.href\\s*=\\s*'([^']+)'",
+          "cleanup": [
+            {
+              "absolute": true
+            }
+          ]
+        },
+        "poster": {
+          "using": "css",
+          "select": "img",
+          "take": "data-src"
+        }
+      }
+    },
+    "episodes": {
+      "each": {
+        "using": "css",
+        "select": "#epAll a"
+      },
+      "fields": {
+        "title": {
+          "using": "css",
+          "cleanup": [
+            {
+              "trim": true
+            }
+          ]
+        },
+        "link": {
+          "using": "css",
+          "take": "href"
+        },
+        "episode": {
+          "using": "css",
+          "cleanup": [
+            {
+              "number": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "details": {
+    "plot": {
+      "using": "css",
+      "select": "div.singleDesc p"
+    },
+    "year": {
+      "using": "css",
+      "select": "#singleList span:contains(سنة الإنتاج) a, #singleList span:contains(موعد الصدور)",
+      "cleanup": [
+        {
+          "number": true
+        }
+      ]
+    },
+    "genres": {
+      "using": "css",
+      "select": "#singleList span:contains(تصنيف) a"
+    }
+  },
+  "play": {
+    "qualities": {
+      "each": {
+        "using": "css",
+        "select": "ul.tabs-ul li[onclick*=player_iframe]"
+      },
+      "fields": {
+        "label": {
+          "using": "css",
+          "select": "a",
+          "cleanup": [
+            {
+              "trim": true
+            }
+          ]
+        },
+        "link": {
+          "using": "css",
+          "take": "onclick",
+          "cleanup": [
+            {
+              "replace": "^.*'(https?://[^']+)'.*$",
+              "with": "$1"
+            }
+          ]
+        }
+      }
+    },
+    "qualitiesRun": {
+      "skip": "aclib\\.|runPop|\\A\\s*\\(\\(\\)=>\\{var [A-Za-z]='",
+      "take": "write:data-url"
+    },
+    "resolve": [
+      {
+        "run": {
+          "skip": "aclib\\.|runPop|\\A\\s*\\(\\(\\)=>\\{var [A-Za-z]='",
+          "take": "write:data-url"
+        }
+      }
+    ],
+    "sources": {
+      "each": {
+        "using": "css",
+        "select": "video source"
+      },
+      "fields": {
+        "url": {
+          "using": "css",
+          "take": "src",
+          "cleanup": [
+            {
+              "absolute": true
+            }
+          ]
+        }
+      }
+    },
+    "hoster": "direct",
+    "playHeaders": {
+      "Referer": "{videoPage}"
+    }
+  },
+  "test": {
+    "search": "venom"
+  }
+}
