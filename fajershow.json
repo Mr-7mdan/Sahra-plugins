@@ -1,8 +1,8 @@
 {
-  "format": 1,
+  "format": 2,
   "id": "fajershow",
   "name": "Fajer Show",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "language": "ar",
   "icon": "https://fajer.show/wp-content/uploads/2026/02/fajershow_logo.png",
 
@@ -13,7 +13,9 @@
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
 
-  "notes": "AlfajerTV's film site (checked 2026-10-25); show.alfajertv.com is the same site. Sections, search, series and details read HTML. The video comes from the site's player API: a POST to /wp-admin/admin-ajax.php (action doo_player_ajax) with the page's postId, which answers with the player frame; its ?source= is the mp4 on the site's own server (hadara.ps). There is no GET route for it (wp-json/dooplayer is not installed), so Play reads the title page once more for the postId. Only server 1 is listed: servers 2-4 are ok.ru, doodstream and streamtape, which need resolvers Sahra does not have yet. Server 1's frame is either the site's jwplayer page (mp4 in ?source=) or the mp4 itself; for some plays it is a fajer.live page with no video, and those fail at Play. A series page holds every season; the app splits it per season.",
+  "requires": ["okru", "doodstream", "streamtape", "vk", "vidmoly"],
+
+  "notes": "AlfajerTV's film site (checked 2026-10-26); show.alfajertv.com is the same site. Sections, search, series and details read HTML. The video comes from the site's player API: a POST to /wp-admin/admin-ajax.php (action doo_player_ajax) with the page's postId and the server's number (nume), which answers with that server's player frame. There is no GET route for it (wp-json/dooplayer is not installed), so Play reads the title page once more for the postId; each server row's link is the title page with ?nume=N added (the site ignores it), which is where Play reads the number back. Every server button is listed, by the site's own name for it. Those names don't say the host (on 2026-10-26 “DW” was vk.com on one film, “VM” DoodStream, “OK 2” VidMoly), so Play picks the resolver from the frame's address: ok.ru, DoodStream (dsvplay.com, do7go.com; dsvplay.com did not resolve and its /d/ link is a download page, so it is read as doodstream.com/e/), Streamtape, VK (vk.com, vkvideo.ru) and VidMoly (vidmoly.to served a parked page from here). Episodes use the same call (type movie works for them too). Server 1 is the site's own (mp4 on hadara.ps); its frame is either the site's jwplayer page (mp4 in ?source=) or the mp4 itself; for some plays it is a fajer.live page with no video, and those fail at Play. A series page holds every season; the app splits it per season.",
 
   "sections": [
     { "id": "english-movies", "title": "English Movies", "titleAr": "أفلام أجنبية",   "path": "/genre/english-movies/page/{page}/", "kind": "movie" },
@@ -74,25 +76,30 @@
 
   "play": {
     "qualities": {
-      "each": { "using": "css", "select": "button.server-btn[data-server=1]" },
+      "each": { "using": "css", "select": "button.server-btn[data-server]" },
       "fields": {
-        "label": { "using": "css", "select": ".server-name", "cleanup": [ { "trim": true } ] },
-        "link":  { "using": "redirect" }
+        "label":  { "using": "css", "select": ".server-name", "cleanup": [ { "trim": true } ] },
+        "source": { "using": "css", "select": ".server-name", "cleanup": [ { "trim": true } ] },
+        "link":   { "using": "css", "take": "data-server", "cleanup": [ { "replace": "^\\s*(\\d+)\\s*$", "with": "?nume=$1" }, { "absolute": true } ] }
       }
     },
     "resolve": [
       {
         "as": "postId",
         "request": { "path": "{link}" },
-        "extract": { "using": "regex", "pattern": "var postId = (\\d+)" }
+        "extract": { "using": "regex", "pattern": "var postId = (\\d+)" },
+        "keep": { "nume": { "using": "redirect", "cleanup": [ { "replace": "^.*[?&]nume=(\\d+).*$", "with": "$1" } ] } }
       },
       {
         "request": {
           "method": "POST",
           "path": "/wp-admin/admin-ajax.php",
           "headers": { "Referer": "{link}", "X-Requested-With": "XMLHttpRequest" },
-          "body": { "type": "form", "fields": { "action": "doo_player_ajax", "post": "{postId}", "type": "movie", "nume": "1" } }
-        }
+          "body": { "type": "form", "fields": { "action": "doo_player_ajax", "post": "{postId}", "type": "movie", "nume": "{nume}" } }
+        },
+        "extract": { "using": "css", "select": "iframe", "take": "src",
+                     "cleanup": [ { "replace": "^http://", "with": "https://" },
+                                  { "replace": "^https://dsvplay\\.com/[de]/", "with": "https://doodstream.com/e/" } ] }
       }
     ],
     "sources": {
