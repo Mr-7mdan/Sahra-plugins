@@ -13,7 +13,7 @@
     {
       "id": "fajershow",
       "name": "Fajer Show",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "https://fajer.show/wp-content/uploads/2026/02/fajershow_logo.png",
       "file": "fajershow.json",
       "language": "ar"
@@ -21,9 +21,33 @@
     {
       "id": "arabseed",
       "name": "ArabSeed",
-      "version": "1.0.1",
+      "version": "1.0.3",
       "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
       "file": "arabseed.json",
+      "language": "ar"
+    },
+    {
+      "id": "asiatvdrama",
+      "name": "AsiaTVDrama",
+      "version": "1.0.3",
+      "icon": "https://astvd.com/wp-content/uploads/2026/10/cropped-AsialogoDrama-192x192.png",
+      "file": "asiatvdrama.json",
+      "language": "ar"
+    },
+    {
+      "id": "faselhd",
+      "name": "FaselHD",
+      "version": "1.0.1",
+      "icon": "https://static.faselhdcdn.com/wp-content/themes/faselhd_2020/images/favicon.png",
+      "file": "faselhd.json",
+      "language": "ar"
+    },
+    {
+      "id": "egydead",
+      "name": "EgyDead",
+      "version": "1.0.4",
+      "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
+      "file": "egydead.json",
       "language": "ar"
     }
   ],
@@ -54,6 +78,69 @@
         "mxdrop.*",
         "m1xdrop.*",
         "mixdrp.*"
+      ]
+    },
+    {
+      "id": "okru",
+      "name": "Ok.ru",
+      "version": "1.0.0",
+      "file": "resolvers/okru.json",
+      "hosts": [
+        "ok.ru",
+        "*.ok.ru"
+      ]
+    },
+    {
+      "id": "vidmoly",
+      "name": "VidMoly",
+      "version": "1.0.0",
+      "file": "resolvers/vidmoly.json",
+      "hosts": [
+        "vidmoly.*"
+      ]
+    },
+    {
+      "id": "streamwish",
+      "name": "StreamWish (LuluVdo, EarnVids)",
+      "version": "1.0.1",
+      "file": "resolvers/streamwish.json",
+      "hosts": [
+        "streamwish.*",
+        "luluvido.*",
+        "luluvdoo.*",
+        "luluvdo.*",
+        "luluvid.*"
+      ]
+    },
+    {
+      "id": "streamhg",
+      "name": "StreamHG",
+      "version": "1.0.0",
+      "file": "resolvers/streamhg.json",
+      "hosts": [
+        "streamhg.*",
+        "hgcloud.*",
+        "hglink.*",
+        "dhcplay.*",
+        "audinifer.*"
+      ]
+    },
+    {
+      "id": "voe",
+      "name": "VOE",
+      "version": "1.0.0",
+      "file": "resolvers/voe.json",
+      "hosts": [
+        "voe.*"
+      ]
+    },
+    {
+      "id": "uqload",
+      "name": "Uqload",
+      "version": "1.0.0",
+      "file": "resolvers/uqload.json",
+      "hosts": [
+        "uqload.*"
       ]
     }
   ]
