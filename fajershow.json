@@ -2,7 +2,7 @@
   "format": 1,
   "id": "fajershow",
   "name": "Fajer Show",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "language": "ar",
   "icon": "https://fajer.show/wp-content/uploads/2026/02/fajershow_logo.png",
 
@@ -51,6 +51,7 @@
   "series": {
     "title": { "using": "css", "select": "h1" },
     "plot":  { "using": "css", "select": "div.single-description" },
+    "noEpisodes": { "using": "css", "select": "div.season-episodes div.no-episodes" },
     "poster": { "using": "css", "select": "div.single-poster img", "take": "src", "cleanup": [ { "replace": "-\\d+x\\d+(\\.\\w+)$", "with": "$1" } ] },
     "episodes": {
       "each": { "using": "css", "select": "div.season-episodes a.episode-card" },
