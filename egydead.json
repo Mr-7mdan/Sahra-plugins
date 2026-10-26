@@ -2,7 +2,7 @@
   "format": 2,
   "id": "egydead",
   "name": "EgyDead",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "language": "ar",
   "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
 
@@ -16,9 +16,9 @@
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
 
-  "requires": ["vidmoly", "mixdrop", "doodstream", "streamwish", "voe", "uqload"],
+  "requires": ["vidmoly", "mixdrop", "doodstream", "streamwish", "voe", "uqload", "vidara"],
 
-  "notes": "Checked 2026-10-26. egydead.fyi (the site's own portal, unchallenged; it keeps the path), egydead.rip and w.egydead.live all move to tv10.egydead.live; when the number moves on and they fail, the probe counts up tv{n}.egydead.live (/home/ answers 200, / redirects). Lists, search, series, season and episode pages are HTML (WordPress; its wp-json lists movies only, not series or episodes). Series sections list their newest episodes and seasons; the list's series field makes one card per show and season, linking to that season's page (built from the episode's link: {address}/seasons/<show>-sNN/; the site redirects a guessed slug to the real one); an episode's or series' page has no episode list, so seasonPage follows its link to the season page. The servers come from the MegaMax player's own API: the watch page ({link}watch/) names the player page, whose Inertia JSON lists each stream (816p, 720p, 480p) with its mirrors. One row per mirror. VidMoly, MixDrop, DoodStream, EarnVids (StreamWish), VOE and Uqload play; StreamRuby, Vidara and BySE have no resolver yet and show as “Get resolver”. Many films are listed twice, the Arabic-dubbed version (its own page, address ending -ar, title ending مدبلج) beside the subtitled one (title ending مترجم); the title cleanup takes both words off, so the list's quality field reads مدبلج from the dubbed one's title and shows it under the card.",
+  "notes": "Checked 2026-10-26. egydead.fyi (the site's own portal, unchallenged; it keeps the path), egydead.rip and w.egydead.live all move to tv10.egydead.live; when the number moves on and they fail, the probe counts up tv{n}.egydead.live (/home/ answers 200, / redirects). Lists, search, series, season and episode pages are HTML (WordPress; its wp-json lists movies only, not series or episodes). Series sections list their newest episodes and seasons; the list's series field makes one card per show and season, linking to that season's page (built from the episode's link: {address}/seasons/<show>-sNN/; the site redirects a guessed slug to the real one); an episode's or series' page has no episode list, so seasonPage follows its link to the season page. The servers come from the MegaMax player's own API: the watch page ({link}watch/) names the player page, whose Inertia JSON lists each stream (816p, 720p, 480p) with its mirrors. One row per mirror. VidMoly, MixDrop, DoodStream, EarnVids (StreamWish), VOE, Uqload and Vidara play; StreamRuby and BySE have no resolver yet and show as “Get resolver”. Many films are listed twice, the Arabic-dubbed version (its own page, address ending -ar, title ending مدبلج) beside the subtitled one (title ending مترجم); the title cleanup takes both words off, so the list's quality field reads مدبلج from the dubbed one's title and shows it under the card.",
 
   "titleStrip": ["مترجم و مدبلج", "مترجمة و مدبلجة"],
 
@@ -128,7 +128,7 @@
           { "replace": "^(\\d+)(\\d)\\d{8}$", "with": "$1.$2 GB" },
           { "replace": "^(\\d{1,3})\\d{6}$", "with": "$1 MB" } ] },
         "source":  { "using": "json", "path": "driver", "cleanup": [ { "map": { "streamruby": "StreamRuby", "uqload": "Uqload", "vidmoly": "VidMoly", "mixdrop": "MixDrop", "doodstream": "DoodStream", "vidara": "Vidara", "byse": "BySE", "earnvids": "EarnVids", "voe": "VOE" } } ] },
-        "resolver": { "using": "json", "path": "driver", "cleanup": [ { "map": { "earnvids": "streamwish" } } ] }
+        "resolver": { "using": "json", "path": "driver", "cleanup": [ { "map": { "earnvids": "streamwish", "vidara": "vidara" } } ] }
       }
     },
     "resolve": [],
