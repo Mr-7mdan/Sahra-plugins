@@ -2,7 +2,7 @@
   "format": 2,
   "id": "faselhd",
   "name": "FaselHD",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "language": "ar",
   "icon": "https://static.faselhdcdn.com/wp-content/themes/faselhd_2020/images/favicon.png",
   "address": "https://web10260x.faselhdx.life",
@@ -22,7 +22,7 @@
   "headers": {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
-  "notes": "Checked 2026-10-26. No API: lists, search, series and title pages are HTML. The site moves by bumping the number in web<N>x.faselhdx.life; every other label and every public mirror redirects to a Cloudflare-challenged portal, so the address probe counts up from the last label that worked (one try every 3 s, at most 50). The title page lists servers (video_player?player_token=...); Each server's player page runs its own scripts in the app's sandbox: every quality button (auto, 1080p, 720p, 360p; HLS on scdns.io) is a row, and Play runs the page again and takes that button. The stream is signed for the IP that read the player page, so it can't be cached. The video server is given the player page as Referer. 429 if requests burst.",
+  "notes": "Checked 2026-10-26. No API: lists, search, series and title pages are HTML. The site moves by bumping the number in web<N>x.faselhdx.life; every other label and every public mirror redirects to a Cloudflare-challenged portal, so the address probe counts up from the last label that worked (one try every 3 s, at most 50). The title page lists servers (video_player?player_token=...); Each server's player page runs its own scripts in the app's sandbox: every quality button (auto, 1080p, 720p, 360p; HLS on scdns.io) is a row, and Play runs the page again and takes that button. The stream is signed for the IP that read the player page, so it can't be cached. The video server is given the player page as Referer. 429 if requests burst. Recently Added lists each new episode as its own card, with no link to its show (an episode's address is not its series' address with words added), so the list's series field is the card's title without its episode words: one card per show and season. An episode's page names its season by the active season box (/?p=N), which series.link keeps as the card's lasting page.",
   "sections": [
     {
       "id": "recent",
@@ -157,6 +157,23 @@
       "genres": {
         "using": "css",
         "select": "span.cat"
+      },
+      "series": {
+        "using": "css",
+        "select": "div.h1",
+        "cleanup": [
+          {
+            "replace": "\\s*(?:[–-]\\s*)?الحلقة.*$",
+            "with": ""
+          },
+          {
+            "replace": "[أإآ]",
+            "with": "ا"
+          },
+          {
+            "trim": true
+          }
+        ]
       }
     },
     "kindRule": [
@@ -204,6 +221,20 @@
     }
   },
   "series": {
+    "link": {
+      "using": "css",
+      "select": "body[class*=\"episodes\"] div.seasonDiv.active",
+      "take": "onclick",
+      "cleanup": [
+        {
+          "replace": "^.*'([^']+)'.*$",
+          "with": "$1"
+        },
+        {
+          "absolute": true
+        }
+      ]
+    },
     "title": {
       "using": "css",
       "select": "h1.h1.title",
