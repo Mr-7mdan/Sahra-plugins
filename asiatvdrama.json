@@ -2,7 +2,7 @@
   "format": 2,
   "id": "asiatvdrama",
   "name": "AsiaTVDrama",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "language": "ar",
   "icon": "https://astvd.com/wp-content/uploads/2026/10/cropped-AsialogoDrama-192x192.png",
 
@@ -15,7 +15,7 @@
 
   "requires": ["doodstream", "okru", "vidmoly", "streamwish", "streamhg", "voe"],
 
-  "notes": "Checked 2026-10-26. Lists, search, series pages and the episode page are HTML (WordPress). The servers come from the site's API: the episode page's form names the backend (today asiawiki.me) and the episode number, and {backend}/wp-admin/admin-ajax.php?action=fetch_episode&id=N answers JSON whose servers are name → <iframe>. A movie is a series page with one episode, so the first step finds that episode. Every server is listed. Its name picks the resolver (EarnVids and LuluVdo are StreamWish), so EarnVids' changing domains need no list; BySE/FileMoon, Vinovo, Vidara, AsiaTvPlayer, Vgembed and BigWarp have no resolver yet and show as “Get resolver”. Titles keep their English name when the site gives one (better matching). Korean dramas list no episodes to visitors without an account, so they have no row here; they still turn up in search.",
+  "notes": "Checked 2026-10-26. Lists, search, series pages and the episode page are HTML (WordPress). The servers come from the site's API: the episode page's form names the backend (today asiawiki.me) and the episode number, and {backend}/wp-admin/admin-ajax.php?action=fetch_episode&id=N answers JSON whose servers are name → <iframe>. A movie is a series page with one episode, so the first step finds that episode. Every server is listed. Its name picks the resolver (EarnVids, LuluVdo, VidHide and StreamWish's sw… domains are StreamWish), so their changing domains need no list; VK has its own resolver, fetched on demand. BySE/FileMoon (an encrypted API, 2026-10-26), Vinovo, Vidara, Vgembed and BigWarp have no resolver yet and show as “Get resolver”; AsiaTvPlayer's host has been down (Cloudflare 525) since it was first checked. Titles keep their English name when the site gives one (better matching). Korean dramas list no episodes to visitors without an account, so they have no row here; they still turn up in search.",
 
   "titleStrip": ["الكوري", "الكورية", "الصيني", "الصينية", "الياباني", "اليابانية", "التايلاندي", "التايلاندية", "التايلندي", "التايلندية", "التايواني", "التايوانية", "الفلبيني", "الهندي", "الاسيوي", "الآسيوي"],
 
@@ -105,7 +105,7 @@
         "source": { "using": "json", "path": "key", "cleanup": [ { "trim": true }, { "map": { "VEO": "VOE" } } ] },
         "resolver": { "using": "json", "path": "key", "cleanup": [
           { "map": { "DoodStream": "doodstream", "Ok.ru": "okru", "VidMoly": "vidmoly", "Vidmoly": "vidmoly",
-                     "LuluVdo": "streamwish", "EarnVids": "streamwish", "StreamHG": "streamhg", "VEO": "voe", "VOE": "voe" } } ] }
+                     "LuluVdo": "streamwish", "EarnVids": "streamwish", "VidHide": "streamwish", "StreamWish": "streamwish", "StreamHG": "streamhg", "VEO": "voe", "VOE": "voe" } } ] }
       }
     },
     "resolve": [],
