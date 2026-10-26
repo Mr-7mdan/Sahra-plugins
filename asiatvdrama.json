@@ -2,7 +2,7 @@
   "format": 2,
   "id": "asiatvdrama",
   "name": "AsiaTVDrama",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "language": "ar",
   "icon": "https://astvd.com/wp-content/uploads/2026/10/cropped-AsialogoDrama-192x192.png",
 
@@ -13,9 +13,9 @@
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
 
-  "requires": ["doodstream", "okru", "vidmoly", "streamwish", "streamhg", "voe", "byse", "streamtape", "vinovo", "vidara"],
+  "requires": ["doodstream", "okru", "vidmoly", "streamwish", "streamhg", "voe", "byse", "streamtape", "vinovo", "vidara", "vk"],
 
-  "notes": "Checked 2026-10-26. Lists, search, series pages and the episode page are HTML (WordPress). The servers come from the site's API: the episode page's form names the backend (today asiawiki.me) and the episode number, and {backend}/wp-admin/admin-ajax.php?action=fetch_episode&id=N answers JSON whose servers are name → <iframe>. A movie is a series page with one episode, so the first step finds that episode. Every server is listed. Its name picks the resolver (EarnVids, LuluVdo, VidHide and StreamWish's sw… domains are StreamWish), so their changing domains need no list; VK has its own resolver, fetched on demand. BySE and FileMoon are one backend whose API answers encrypted; the BySE resolver decrypts it. Streamtape, Vinovo and Vidara have their own resolvers; Vgembed and BigWarp have none and show as “Get resolver” (BigWarp hands non-browser players a decoy clip); AsiaTvPlayer's host has been down (Cloudflare 525) since it was first checked. Titles keep their English name when the site gives one (better matching). Korean dramas list no episodes to visitors without an account, so they have no row here; they still turn up in search.",
+  "notes": "Checked 2026-10-26 (servers re-checked on six titles that evening). Lists, search, series pages and the episode page are HTML (WordPress). The servers come from the site's API: the episode page's form names the backend (today asiawiki.me) and the episode number, and {backend}/wp-admin/admin-ajax.php?action=fetch_episode&id=N answers JSON whose servers are name → <iframe>. A movie is a series page with one episode, so the first step finds that episode. Every server is listed. Its name picks the resolver (EarnVids, LuluVdo, VidHide and StreamWish's sw… domains are StreamWish), so their changing domains need no list; VK (vk.com) has its own resolver, installed with the plugin and picked by host. DoodStream servers on older titles point at dsvplay.com, which did not resolve (DNS) on 2026-10-26; newer ones use playmogo.com. BySE and FileMoon are one backend whose API answers encrypted; the BySE resolver decrypts it. Streamtape, Vinovo and Vidara have their own resolvers; Vgembed and BigWarp have none and show as “Get resolver” (BigWarp hands non-browser players a decoy clip); AsiaTvPlayer's host has been down (Cloudflare 525) since it was first checked. Titles keep their English name when the site gives one (better matching). Korean dramas list no episodes to visitors without an account, so they have no row here; they still turn up in search.",
 
   "titleStrip": ["الكوري", "الكورية", "الصيني", "الصينية", "الياباني", "اليابانية", "التايلاندي", "التايلاندية", "التايلندي", "التايلندية", "التايواني", "التايوانية", "الفلبيني", "الهندي", "الاسيوي", "الآسيوي"],
 
