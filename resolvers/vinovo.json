@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "vinovo",
+  "name": "Vinovo",
+  "version": "1.0.0",
+  "hosts": ["vinovo.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on AsiaTVDrama embeds (vinovo.to/e/CODE). The embed page names the file (meta file_code), a page token (meta token) and the video server (video data-base). Its player posts the token to /api/file/url/CODE (with an empty recaptcha field: the page's reCAPTCHA script is switched off), which answers a signed path; the mp4 is {data-base}/stream/{path}. The API checks the token against the PHPSESSID cookie the embed page set, which Sahra's requests carry from one step to the next on their own (so no Cookie header here: one would stop that). If Vinovo turns its reCAPTCHA back on, this resolver stops working. API (one call), the rest from the page's meta tags.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
+      "extract": { "using": "css", "select": "meta[name=token]", "take": "content" },
+      "as": "token",
+      "keep": {
+        "code": { "using": "css", "select": "meta[name=file_code]", "take": "content" },
+        "base": { "using": "css", "select": "video#video", "take": "data-base", "cleanup": [ { "replace": "/+$", "with": "" } ] }
+      } },
+    { "request": { "method": "POST", "path": "/api/file/url/{code}",
+                   "headers": { "Referer": "{link}", "Origin": "{origin}", "X-Requested-With": "XMLHttpRequest" },
+                   "body": { "type": "form", "fields": { "recaptcha": "", "token": "{token}" } } },
+      "extract": { "using": "json", "path": "token" },
+      "as": "path" },
+    { "request": { "path": "{base}/stream/{path}", "headers": { "Referer": "{origin}/" } } }
+  ],
+  "playHeaders": { "Referer": "{origin}/" },
+  "test": { "link": "https://vinovo.to/e/q77de3wrcrpxv" }
+}
