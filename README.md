@@ -6,7 +6,7 @@ A plugin is one JSON file. It teaches Sahra how to read one website: how to list
 
 ## What a plugin file holds
 
-- `format`: the version of the file layout. Leave it at `1`.
+- `format`: the version of the file layout. `1`, or `2` when the file uses any newer key (`requires`, `qualitiesSteps`, `qualitiesPath`, `keep`, a quality's `resolver`, a list's `series`, `series.seasonPage`/`series.link`, `run`, `qualitiesRun`, the probe or solveOnce): the app refuses those keys under `1`, so an older Sahra says "Update Sahra" rather than failing.
 - `id`: a short name with no spaces. Never change it after release.
 - `name`: what people see in Sahra.
 - `version`: bump this every time you change the file (for example `1.0.0` to `1.0.1`). Apps only update when the number goes up.
@@ -15,6 +15,15 @@ A plugin is one JSON file. It teaches Sahra how to read one website: how to list
 - `address`: the main web address of the site.
 - `fallbackAddresses`: other addresses to try if the main one stops working.
 - `addressFinder`: a last resort. It opens another page (a portal) and reads the new address from it.
+  Some sites have no portal you can read, but move by changing a number in the address
+  (`web102518x`, then `web102519x`…). For those, write `"addressFinder": {"probe": {"address": "https://web{n}x.example.com"}}`:
+  Sahra counts up from the last address that worked (or from where it last stopped looking) and keeps
+  the first one that answers by itself (not by sending you elsewhere). It waits 3 seconds between
+  tries (`every`) and stops after 50 (`tries`), then tries the 5 numbers below, in case the site
+  started counting again; then it waits ten minutes before trying again.
+  When even that finds nothing, `"solveOnce": {"portal": "https://www.example.com", "accept": "web*x.example.com"}`
+  (beside `probe`) asks the person once: on iPhone and iPad the portal opens in a small browser,
+  and the address it lands on is kept if it matches `accept`; on Apple TV they type the address. The file must say `"format": 2`.
 - `headers`: extra details sent with every request. The `User-Agent` tells the site we are a normal browser. Some sites refuse requests without it.
 - `notes`: anything you want to remember. Sahra ignores it.
 - `sections`: the rows on the plugin's page. Each has an `id`, a `title`, an Arabic `titleAr`, and a `path`. `{page}` in the path is the page number. For now Sahra's rows only load the first page, so it becomes 1.
@@ -56,17 +65,38 @@ Every value is read with a small recipe. A recipe has `using`, and often `take` 
 
 In a list, `each` picks one block per title, and `fields` reads the details from inside that block. `scope: "page"` means a field reads the whole page, not only its block.
 
+### When the address is made by the page's own script
+
+Some player pages hide the video address inside a script that changes on every visit, so no recipe can read it. A `run` step runs that page's own scripts, unchanged, in a closed box inside the app (no internet, no timers, at most 5 seconds) and keeps the address they give the player:
+
+```json
+{ "run": { "skip": "popunder", "take": "write:data-url" } }
+```
+
+The app always runs the scripts written in the page itself, in order, and only on the site's own pages (or, in a resolver, its video host's).
+
+- `skip`: scripts to leave out, by a word they contain (ads, mostly).
+- `take`: where the address shows up. `write:data-url` is a button the script writes, like `data-url="…"`. `setup:file`, `setup:sources` and `load:file` are what the script hands the video player.
+
+A step has a `request` or a `run`, not both. The first address found is used. A file with a `run` step must say `"format": 2`.
+
+To list every quality button as its own choice, put the same `run` in `play` as `qualitiesRun`. Sahra then opens each server's page when it lists the servers, and shows one row per button, like "Server #01 · 1080p". Pressing a row opens that page again and plays the same button.
+
 ## Lists: `each` and `fields`
 
 Every list (`list`, `search.list`, `series.episodes`, `series.otherSeasons`, `play.qualities`, `play.sources`) has the same shape: `each` finds one block per item, and `fields` is a set of named recipes read from inside that block.
 
 Each list needs certain fields:
 
-- Titles (`list`, `search.list`, `series.episodes`, `series.otherSeasons`): `title` and `link`. Optional: `poster`, `year`, `quality`, `genres`, `season`, `episode`.
+- Titles (`list`, `search.list`, `series.episodes`, `series.otherSeasons`): `title` and `link`. Optional: `poster`, `year`, `quality`, `genres`, `season`, `episode`. In `list` and `search.list`, `series` makes the episodes of one show a single card: give it a value every episode of that show shares (its show's link, or the title without the episode number).
 - `play.qualities`: `label` and `link`. Optional: `size`.
 - `play.sources`: `url`. Optional: `label`.
 
 An item missing a required field is skipped.
+
+When an episode's page lists no episodes but links to its season's page (EgyDead), `series.seasonPage` names that link; Sahra follows it once. A file using it says `"format": 2`.
+
+When a show is listed before any episode is up, the site usually says so on the page ("لا توجد حلقات متاحة"). `series.noEpisodes` finds that notice; Sahra then shows the season as empty instead of an error. Without it, an empty episode list is reported as a broken rule.
 
 When a series page lists every season at once (Fajer Show does), give each episode a `season` field and leave out `otherSeasons`: Sahra shows that page one season at a time (the first one listed to start with) and offers the others as its other seasons.
 
@@ -131,7 +161,7 @@ A resolver file looks like this:
 - `hosts`: the hosts this resolver handles. A `*` stands for one part of the name, between dots: `mixdrop.*` matches `mixdrop.co` and `mixdrop.to`, but not `mixdrop.co.uk` (write that one out in full) and never `mixdrop.co.something.else`. A `*.` at the start stands for one or more parts: `*.mixdrop.co` matches `m1.mixdrop.co` and `a.b.mixdrop.co`, but not `mixdrop.co` itself, so list both when the site uses both. Capital letters don't matter.
 - `steps`: work like a plugin's `resolve` steps, `keep` and `{now}` included. `{link}` is the link handed over. `{origin}` is the `https://host` of the last page the steps opened (the link's own host at first), so it follows the host when the link sends Sahra on to another one. A path starting with `/` goes to `{origin}`.
 - `sources` (optional): read on the last page the steps reached. It needs a `url` field. Leave it out when the steps themselves reach the video, as Mixdrop's do. If a step's answer is already the video, Sahra plays it and `sources` is not used. When the last step finds a web address (as above), Sahra opens it: a video plays, and a page is read with `sources`.
-- `playHeaders`: what the video server needs. `{origin}` is filled in.
+- `playHeaders`: what the video server needs. `{origin}` is filled in, and `{videoPage}`: the full address of the page the video was found on.
 - `test.link`: a link that should keep working. Sahra tries it when the resolver is installed and whenever a new version arrives. If it fails, every plugin that requires this resolver shows its play check in red, until a version that works is published. If the video behind the link has simply been deleted, Sahra only shows a warning (the plugin stays green): replace the link with a new one.
 
 Bump the resolver's `version` after every change, and in `index.json` too.
