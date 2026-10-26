@@ -1,0 +1,9 @@
+{
+  "format": 2,
+  "id": "bigwarp",
+  "name": "BigWarp",
+  "version": "1.0.0",
+  "hosts": ["bigwarp.*"],
+  "unsupported": "it gives every app the same short decoy clip instead of the episode",
+  "notes": "Checked 2026-10-26: every request to a bigwarp.io embed, whatever Referer or cookies it sends, gets the same 1 MB clip (bigwarp.io/player/321b.mp4). Only a browser passing its checks gets the real video, and Sahra does not pretend to be one. Marked unsupported so its servers say so and the generic resolver does not play the decoy."
+}
