@@ -29,7 +29,7 @@
     {
       "id": "asiatvdrama",
       "name": "AsiaTVDrama",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "icon": "https://astvd.com/wp-content/uploads/2026/10/cropped-AsialogoDrama-192x192.png",
       "file": "asiatvdrama.json",
       "language": "ar"
@@ -37,7 +37,7 @@
     {
       "id": "faselhd",
       "name": "FaselHD",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "icon": "https://static.faselhdcdn.com/wp-content/themes/faselhd_2020/images/favicon.png",
       "file": "faselhd.json",
       "language": "ar"
@@ -45,7 +45,7 @@
     {
       "id": "egydead",
       "name": "EgyDead",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
       "file": "egydead.json",
       "language": "ar"
@@ -102,14 +102,20 @@
     {
       "id": "streamwish",
       "name": "StreamWish (LuluVdo, EarnVids)",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "file": "resolvers/streamwish.json",
       "hosts": [
         "streamwish.*",
         "luluvido.*",
         "luluvdoo.*",
         "luluvdo.*",
-        "luluvid.*"
+        "luluvid.*",
+        "vidhide.*",
+        "vidhidepre.*",
+        "vidhidevip.*",
+        "vidhidepro.*",
+        "vidhidehub.*",
+        "vidhidefast.*"
       ]
     },
     {
@@ -141,6 +147,20 @@
       "file": "resolvers/uqload.json",
       "hosts": [
         "uqload.*"
+      ]
+    },
+    {
+      "id": "vk",
+      "name": "VK",
+      "version": "1.0.0",
+      "file": "resolvers/vk.json",
+      "hosts": [
+        "vk.com",
+        "*.vk.com",
+        "vkvideo.ru",
+        "*.vkvideo.ru",
+        "vk.ru",
+        "*.vk.ru"
       ]
     }
   ]
