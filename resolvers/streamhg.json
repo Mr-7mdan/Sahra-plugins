@@ -1,0 +1,26 @@
+{
+  "format": 1,
+  "id": "streamhg",
+  "name": "StreamHG",
+  "version": "1.0.0",
+  "hosts": ["streamhg.*", "hgcloud.*", "hglink.*", "dhcplay.*", "audinifer.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on AsiaTVDrama embeds (hgcloud.to/e/ID, dhcplay.com/e/ID). Those pages are only a loader whose script picks a player domain; the player, audinifer.com/e/ID (same ID), holds a packed script naming the HLS playlist. So Sahra asks audinifer.com for the same /e/ID path directly. HTML (a packed script), no API. When StreamHG moves its player to a new domain, change audinifer.com in the first step and add the domain to hosts.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
+      "extract": { "using": "redirect", "cleanup": [ { "replace": "^https?://[^/]+", "with": "https://audinifer.com" } ] },
+      "as": "player" },
+    { "request": { "path": "{player}", "headers": { "Referer": "{link}" } } }
+  ],
+  "sources": {
+    "each": { "using": "regex", "pattern": "eval\\(function\\(p,a,c,k,e,d\\).*?\\.split\\('\\|'\\).*?\\)\\)" },
+    "fields": { "url": { "using": "regex",
+                         "pattern": "(eval\\(function\\(p,a,c,k,e,d\\).*?\\.split\\('\\|'\\).*?\\)\\))",
+                         "cleanup": [ { "unpack": true },
+                                      { "replace": "(?s)^.*?[\"'](https?://[^\"']+?\\.m3u8[^\"']*)[\"'].*$", "with": "$1" } ] } }
+  },
+  "playHeaders": { "Referer": "{origin}/", "Origin": "{origin}" },
+  "test": { "link": "https://hgcloud.to/e/8ret8y5pra8u" }
+}
