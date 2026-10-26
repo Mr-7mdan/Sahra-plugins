@@ -2,12 +2,12 @@
   "format": 1,
   "id": "streamwish",
   "name": "StreamWish (LuluVdo, EarnVids)",
-  "version": "1.0.1",
-  "hosts": ["streamwish.*", "luluvido.*", "luluvdoo.*", "luluvdo.*", "luluvid.*"],
+  "version": "1.0.2",
+  "hosts": ["streamwish.*", "luluvido.*", "luluvdoo.*", "luluvdo.*", "luluvid.*", "vidhide.*", "vidhidepre.*", "vidhidevip.*", "vidhidepro.*", "vidhidehub.*", "vidhidefast.*"],
   "headers": {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
-  "notes": "Checked 2026-10-26 on AsiaTVDrama embeds: LuluVdo (luluvido.com/e/ID, also luluvdoo.com, luluvid.com) and EarnVids (morencius.com/embed/ID; the site also used movearnpre.com, minochinos.com, callistanise.com). Both are the same player: a packed script which, unpacked, names the HLS playlist (file:\"…m3u8\" or links={\"hls2\":\"…m3u8\"}). The first https m3u8 address in it is played. HTML (a packed script), no API. EarnVids changes its domain often, so its domains are not in hosts: a plugin names this resolver for its EarnVids servers with its “resolver” field.",
+  "notes": "Checked 2026-10-26 on AsiaTVDrama embeds: LuluVdo (luluvido.com/e/ID, also luluvdoo.com, luluvid.com) and EarnVids (morencius.com/embed/ID; the site also used movearnpre.com, minochinos.com, callistanise.com). Both are the same player: a packed script which, unpacked, names the HLS playlist (file:\"…m3u8\" or links={\"hls2\":\"…m3u8\"}). The first https m3u8 address in it is played. HTML (a packed script), no API. EarnVids changes its domain often, so its domains are not in hosts: a plugin names this resolver for its EarnVids servers with its “resolver” field. VidHide (vidhidepre.com/embed/ID, vidhidevip.com, 2026-10-26) sends the browser on to an EarnVids domain (callistanise.com) with the same packed player (links.hls2 is the m3u8), so its vidhide… domains are here too (1.0.2).",
   "steps": [
     { "request": { "path": "{link}", "headers": { "Referer": "{link}" } } }
   ],
