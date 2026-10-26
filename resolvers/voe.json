@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "id": "voe",
+  "name": "VOE",
+  "version": "1.0.0",
+  "hosts": ["voe.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on an AsiaTVDrama embed (voe.sx/e/ID). voe.sx answers with a page that sends the browser to a player on a changing domain (window.location.href = '…/e/ID'). The player page keeps its settings in <script type=\"application/json\">[\"…\"]</script>, encoded: rot13, junk pairs (@$ ^^ ~@ %? *~ !! #&) dropped, base64, every character moved back 3, reversed, base64 again; the result is JSON whose source is the HLS playlist. HTML (an encoded page value), no API, nothing executed.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
+      "extract": { "using": "regex", "pattern": "window\\.location\\.href\\s*=\\s*'(https?://[^']+)'" },
+      "as": "player" },
+    { "request": { "path": "{player}", "headers": { "Referer": "{link}" } } }
+  ],
+  "sources": {
+    "each": { "using": "regex", "pattern": "<script type=\"application/json\">\\s*\\[.*?\\]\\s*</script>" },
+    "fields": { "url": { "using": "json", "path": "source",
+      "within": { "using": "json", "path": "[0]",
+        "within": { "using": "regex", "pattern": "<script type=\"application/json\">\\s*(\\[.*?\\])\\s*</script>" },
+        "cleanup": [ { "rot13": true },
+                     { "map": { "@$": "", "^^": "", "~@": "", "%?": "", "*~": "", "!!": "", "#&": "" } },
+                     { "decode": "base64" },
+                     { "shift": -3 },
+                     { "reverse": true },
+                     { "decode": "base64" } ] } } }
+  },
+  "playHeaders": { "Referer": "{origin}/", "Origin": "{origin}" },
+  "test": { "link": "https://voe.sx/e/rx2gek2lgqhb" }
+}
