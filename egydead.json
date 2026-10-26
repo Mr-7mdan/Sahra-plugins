@@ -1,0 +1,140 @@
+{
+  "format": 2,
+  "id": "egydead",
+  "name": "EgyDead",
+  "version": "1.0.4",
+  "language": "ar",
+  "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
+
+  "address": "https://tv10.egydead.live",
+  "fallbackAddresses": ["https://egydead.fyi", "https://egydead.rip", "https://w.egydead.live"],
+  "addressFinder": {
+    "probe": { "address": "https://tv{n}.egydead.live", "path": "/home/", "tries": 30, "every": 3 }
+  },
+
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+
+  "requires": ["vidmoly", "mixdrop", "doodstream", "streamwish", "voe", "uqload"],
+
+  "notes": "Checked 2026-10-26. egydead.fyi (the site's own portal, unchallenged; it keeps the path), egydead.rip and w.egydead.live all move to tv10.egydead.live; when the number moves on and they fail, the probe counts up tv{n}.egydead.live (/home/ answers 200, / redirects). Lists, search, series, season and episode pages are HTML (WordPress; its wp-json lists movies only, not series or episodes). Series sections list their newest episodes and seasons; the list's series field makes one card per show and season, linking to that season's page (built from the episode's link: {address}/seasons/<show>-sNN/; the site redirects a guessed slug to the real one); an episode's or series' page has no episode list, so seasonPage follows its link to the season page. The servers come from the MegaMax player's own API: the watch page ({link}watch/) names the player page, whose Inertia JSON lists each stream (816p, 720p, 480p) with its mirrors. One row per mirror. VidMoly, MixDrop, DoodStream, EarnVids (StreamWish), VOE and Uqload play; StreamRuby, Vidara and BySE have no resolver yet and show as “Get resolver”.",
+
+  "titleStrip": ["مترجم و مدبلج", "مترجمة و مدبلجة"],
+
+  "sections": [
+    { "id": "english-movies",  "title": "English Movies",     "titleAr": "أفلام أجنبية",       "path": "/category/english-movies/page/{page}/", "kind": "movie" },
+    { "id": "arabic-movies",   "title": "Arabic Movies",      "titleAr": "أفلام عربية",        "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D8%B9%D8%B1%D8%A8%D9%8A/page/{page}/", "kind": "movie" },
+    { "id": "turkish-movies",  "title": "Turkish Movies",     "titleAr": "أفلام تركية",        "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D8%AA%D8%B1%D9%83%D9%8A%D8%A9/page/{page}/", "kind": "movie" },
+    { "id": "asian-movies",    "title": "Asian Movies",       "titleAr": "أفلام آسيوية",       "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D8%A7%D8%B3%D9%8A%D9%88%D9%8A%D8%A9/page/{page}/", "kind": "movie" },
+    { "id": "dubbed-movies",   "title": "Dubbed Movies",      "titleAr": "أفلام مدبلجة",       "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D8%A7%D8%AC%D9%86%D8%A8%D9%8A%D8%A9-%D9%85%D8%AF%D8%A8%D9%84%D8%AC%D8%A9/page/{page}/", "kind": "movie" },
+    { "id": "cartoon-movies",  "title": "Animated Movies",    "titleAr": "أفلام كرتون",        "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D9%83%D8%B1%D8%AA%D9%88%D9%86/page/{page}/", "kind": "movie" },
+    { "id": "indian-movies",   "title": "Indian Movies",      "titleAr": "أفلام هندية",        "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D9%87%D9%86%D8%AF%D9%8A%D8%A9/page/{page}/", "kind": "movie" },
+    { "id": "documentaries",   "title": "Documentaries",      "titleAr": "أفلام وثائقية",      "path": "/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D9%88%D8%AB%D8%A7%D8%A6%D9%82%D9%8A%D8%A9/page/{page}/", "kind": "movie" },
+    { "id": "english-series",  "title": "English Series",     "titleAr": "مسلسلات أجنبية",     "path": "/series-category/english-series/page/{page}/", "kind": "series" },
+    { "id": "arabic-series",   "title": "Arabic Series",      "titleAr": "مسلسلات عربية",      "path": "/series-category/arabic-series/page/{page}/", "kind": "series" },
+    { "id": "turkish-series",  "title": "Turkish Series",     "titleAr": "مسلسلات تركية",      "path": "/series-category/turkish-series/page/{page}/", "kind": "series" },
+    { "id": "asian-series",    "title": "Asian Series",       "titleAr": "مسلسلات آسيوية",     "path": "/series-category/asian-series/page/{page}/", "kind": "series" },
+    { "id": "latino-series",   "title": "Latin American Series", "titleAr": "مسلسلات لاتينية", "path": "/series-category/latino-series/page/{page}/", "kind": "series" },
+    { "id": "cartoon-series",  "title": "Animated Series",    "titleAr": "مسلسلات كرتون",      "path": "/series-category/cartoon-series/page/{page}/", "kind": "series" }
+  ],
+
+  "search": {
+    "path": "/?s={words}"
+  },
+
+  "list": {
+    "each": { "using": "css", "select": "li.movieItem" },
+    "fields": {
+      "title":  { "using": "css", "select": "a", "take": "title" },
+      "link":   { "using": "css", "select": "a", "take": "href" },
+      "poster": { "using": "css", "select": "img", "take": "src", "cleanup": [ { "replace": "-\\d+x\\d+(\\.[A-Za-z]+)$", "with": "$1" } ] },
+      "year":   { "using": "css", "select": "a", "take": "title", "cleanup": [ { "replace": "^.*?\\b((?:19|20)\\d\\d)\\b.*$", "with": "$1" } ] },
+      "series": { "using": "css", "select": "a", "take": "href", "cleanup": [ { "replace": "^(https?://[^/]+)/(?:episodes|seasons)/(.+?-s\\d+)(?:e\\d+)?(-ar)?/?$", "with": "$1/seasons/$2$3/" } ] }
+    },
+    "kindRule": [
+      { "linkContains": "/episodes/", "kind": "series" },
+      { "linkContains": "/seasons/",  "kind": "series" },
+      { "linkContains": "/series/",   "kind": "series" },
+      { "linkContains": "/Series/",   "kind": "series" },
+      { "linkContains": "/",          "kind": "movie" }
+    ],
+    "nextPage": { "using": "css", "select": "a.next.page-numbers", "take": "href" }
+  },
+
+  "series": {
+    "link": { "using": "css", "select": "link[rel=canonical][href*=\"/seasons/\"]", "take": "href" },
+    "seasonPage": { "using": "css", "select": "#breadcrumbs a[href*=\"/seasons/\"], .seasons-list a[href*=\"/seasons/\"]", "take": "href" },
+    "title": { "using": "css", "select": ".singleTitle em", "cleanup": [
+      { "replace": "\\s+الموسم.*$", "with": "" }, { "trim": true } ] },
+    "season": { "using": "css", "select": ".singleTitle em", "cleanup": [
+      { "replace": "^(?!.*الموسم).*$", "with": "1" },
+      { "replace": "^.*الموسم\\s*", "with": "" },
+      { "replace": "\\s+(?:مترجم|مدبلج|كامل).*$", "with": "" },
+      { "map": { "الحادي عشر": "11", "الثاني عشر": "12", "الثالث عشر": "13", "الرابع عشر": "14", "الخامس عشر": "15", "الأول": "1", "الاول": "1", "الثاني": "2", "الثالث": "3", "الرابع": "4", "الخامس": "5", "السادس": "6", "السابع": "7", "الثامن": "8", "التاسع": "9", "العاشر": "10" } },
+      { "number": true } ] },
+    "plot": { "using": "css", "select": ".extra-content p" },
+    "poster": { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" },
+    "otherSeasons": {
+      "each": { "using": "css", "select": ".seasons-list li.movieItem a" },
+      "fields": {
+        "title": { "using": "css", "select": "h1.BottomTitle" },
+        "link":  { "using": "css", "take": "href" }
+      }
+    },
+    "episodes": {
+      "each": { "using": "css", "select": "div.EpsList li a" },
+      "fields": {
+        "title":   { "using": "css", "take": "title" },
+        "link":    { "using": "css", "take": "href" },
+        "episode": { "using": "css", "cleanup": [ { "number": true } ] }
+      }
+    }
+  },
+
+  "details": {
+    "plot":   { "using": "css", "select": ".extra-content p" },
+    "year":   { "using": "css", "select": ".LeftBox a[href*=\"/year/\"]", "cleanup": [ { "number": true } ] },
+    "genres": { "using": "css", "select": ".LeftBox a[href*=\"/type/\"]" },
+    "poster": { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" }
+  },
+
+  "play": {
+    "qualitiesSteps": [
+      { "request": { "path": "{link}watch/" },
+        "extract": { "using": "css", "select": "ul.serversList li[data-link*=\"/iframe/\"]", "take": "data-link" },
+        "as": "player" },
+      { "request": { "path": "{player}", "headers": { "Referer": "{address}/" } },
+        "extract": { "using": "json", "path": "version",
+                     "within": { "using": "css", "select": "script[data-page=app]", "take": "html" } },
+        "as": "inertia" },
+      { "request": { "path": "{player}",
+                     "headers": { "Referer": "{player}", "Accept": "text/html, application/xhtml+xml",
+                                  "X-Requested-With": "XMLHttpRequest", "X-Inertia": "true",
+                                  "X-Inertia-Version": "{inertia}",
+                                  "X-Inertia-Partial-Component": "files/mirror/video",
+                                  "X-Inertia-Partial-Data": "streams" } } }
+    ],
+    "qualities": {
+      "each": { "using": "json", "path": "props.streams.data[*].mirrors[*]" },
+      "fields": {
+        "label":   { "using": "json", "path": "driver", "cleanup": [ { "map": { "streamruby": "StreamRuby", "uqload": "Uqload", "vidmoly": "VidMoly", "mixdrop": "MixDrop", "doodstream": "DoodStream", "vidara": "Vidara", "byse": "BySE", "earnvids": "EarnVids", "voe": "VOE" } } ] },
+        "link":    { "using": "json", "path": "link", "cleanup": [ { "replace": "^//", "with": "https://" } ] },
+        "quality": { "using": "json", "path": "^.label", "cleanup": [ { "replace": "\\s*\\(.*\\)\\s*$", "with": "" } ] },
+        "size":    { "using": "json", "path": "^.size", "cleanup": [
+          { "replace": "^(\\d+)(\\d)\\d{8}$", "with": "$1.$2 GB" },
+          { "replace": "^(\\d{1,3})\\d{6}$", "with": "$1 MB" } ] },
+        "source":  { "using": "json", "path": "driver", "cleanup": [ { "map": { "streamruby": "StreamRuby", "uqload": "Uqload", "vidmoly": "VidMoly", "mixdrop": "MixDrop", "doodstream": "DoodStream", "vidara": "Vidara", "byse": "BySE", "earnvids": "EarnVids", "voe": "VOE" } } ] },
+        "resolver": { "using": "json", "path": "driver", "cleanup": [ { "map": { "earnvids": "streamwish" } } ] }
+      }
+    },
+    "resolve": [],
+    "sources": {
+      "each": { "using": "css", "select": "video source[src]" },
+      "fields": { "url": { "using": "css", "take": "src" } }
+    },
+    "playHeaders": {}
+  },
+
+  "test": { "search": "love" }
+}
