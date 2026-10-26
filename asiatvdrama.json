@@ -1,0 +1,120 @@
+{
+  "format": 2,
+  "id": "asiatvdrama",
+  "name": "AsiaTVDrama",
+  "version": "1.0.3",
+  "language": "ar",
+  "icon": "https://astvd.com/wp-content/uploads/2026/10/cropped-AsialogoDrama-192x192.png",
+
+  "address": "https://astvd.com",
+  "fallbackAddresses": ["https://asiatvdrama.com"],
+
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+
+  "requires": ["doodstream", "okru", "vidmoly", "streamwish", "streamhg", "voe"],
+
+  "notes": "Checked 2026-10-26. Lists, search, series pages and the episode page are HTML (WordPress). The servers come from the site's API: the episode page's form names the backend (today asiawiki.me) and the episode number, and {backend}/wp-admin/admin-ajax.php?action=fetch_episode&id=N answers JSON whose servers are name → <iframe>. A movie is a series page with one episode, so the first step finds that episode. Every server is listed. Its name picks the resolver (EarnVids and LuluVdo are StreamWish), so EarnVids' changing domains need no list; BySE/FileMoon, Vinovo, Vidara, AsiaTvPlayer, Vgembed and BigWarp have no resolver yet and show as “Get resolver”. Titles keep their English name when the site gives one (better matching). Korean dramas list no episodes to visitors without an account, so they have no row here; they still turn up in search.",
+
+  "titleStrip": ["الكوري", "الكورية", "الصيني", "الصينية", "الياباني", "اليابانية", "التايلاندي", "التايلاندية", "التايلندي", "التايلندية", "التايواني", "التايوانية", "الفلبيني", "الهندي", "الاسيوي", "الآسيوي"],
+
+  "sections": [
+    { "id": "chinese",  "title": "Chinese Dramas",   "titleAr": "الدراما الصينية",    "path": "/types/%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D9%85%D8%A7-%D8%A7%D9%84%D8%B5%D9%8A%D9%86%D9%8A%D8%A9/page/{page}/", "kind": "series" },
+    { "id": "japanese", "title": "Japanese Dramas",  "titleAr": "الدراما اليابانية",  "path": "/types/%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D9%85%D8%A7-%D8%A7%D9%84%D9%8A%D8%A7%D8%A8%D8%A7%D9%86%D9%8A%D8%A9/page/{page}/", "kind": "series" },
+    { "id": "thai",     "title": "Thai Dramas",      "titleAr": "الدراما التايلندية", "path": "/types/%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D9%85%D8%A7-%D8%A7%D9%84%D8%AA%D8%A7%D9%8A%D9%84%D9%86%D8%AF%D9%8A%D8%A9/page/{page}/", "kind": "series" },
+    { "id": "taiwan",   "title": "Taiwanese Dramas", "titleAr": "الدراما التايوانية", "path": "/types/%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D9%85%D8%A7-%D8%A7%D9%84%D8%AA%D8%A7%D9%8A%D9%88%D9%86%D9%8A%D8%A9/page/{page}/", "kind": "series" },
+    { "id": "movies",   "title": "Asian Movies",     "titleAr": "أفلام آسيوية",       "path": "/types/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D8%A7%D8%B3%D9%8A%D9%88%D9%8A%D8%A9/page/{page}/", "kind": "movie" }
+  ],
+
+  "search": {
+    "path": "/?s={words}"
+  },
+
+  "list": {
+    "each": { "using": "css", "select": "div.block-post2" },
+    "fields": {
+      "title":  { "using": "css", "select": "a", "take": "title", "cleanup": [
+        { "replace": "^(?:19|20)\\d\\d\\s+", "with": "" },
+        { "replace": "^[^A-Za-z]*?(\\d*[A-Za-z][^\\u0600-\\u06FF]*[A-Za-z0-9!?.])[^A-Za-z]*$", "with": "$1" } ] },
+      "link":   { "using": "css", "select": "a", "take": "href" },
+      "poster": { "using": "css", "select": "img", "take": "data-img" },
+      "year":   { "using": "css", "select": "a", "take": "title", "cleanup": [ { "replace": "^.*?\\b((?:19|20)\\d\\d)\\b.*$", "with": "$1" } ] }
+    },
+    "kindRule": [
+      { "linkContains": "%d9%81%d9%8a%d9%84%d9%85", "kind": "movie" },
+      { "linkContains": "%D9%81%D9%8A%D9%84%D9%85", "kind": "movie" },
+      { "linkContains": "/drama/", "kind": "series" }
+    ],
+    "nextPage": { "using": "css", "select": "a.next.page-numbers", "take": "href" }
+  },
+
+  "series": {
+    "title": { "using": "css", "select": "h1.title", "cleanup": [
+      { "replace": "^(?:19|20)\\d\\d\\s+", "with": "" },
+      { "replace": "^[^A-Za-z]*?(\\d*[A-Za-z][^\\u0600-\\u06FF]*[A-Za-z0-9!?.])[^A-Za-z]*$", "with": "$1" } ] },
+    "season": { "using": "css", "select": "ul.eplist2 li a span", "cleanup": [
+      { "replace": "^\\s*(?:الجزء|الموسم)\\s*", "with": "" },
+      { "map": { "الحادي عشر": "11", "الثاني عشر": "12", "الأول": "1", "الاول": "1", "الثاني": "2", "الثالث": "3", "الرابع": "4", "الخامس": "5", "السادس": "6", "السابع": "7", "الثامن": "8", "التاسع": "9", "العاشر": "10" } },
+      { "number": true } ] },
+    "plot": { "using": "css", "select": "meta[property=\"og:description\"]", "take": "content" },
+    "poster": { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" },
+    "otherSeasons": {
+      "each": { "using": "css", "select": "ul.list-seasons:has(li + li) li:not(.active) a" },
+      "fields": {
+        "title": { "using": "css", "cleanup": [ { "trim": true } ] },
+        "link":  { "using": "css", "take": "href" }
+      }
+    },
+    "episodes": {
+      "each": { "using": "css", "select": "ul.eplist2 li a" },
+      "fields": {
+        "title":   { "using": "css", "take": "title" },
+        "link":    { "using": "css", "take": "href" },
+        "episode": { "using": "css", "take": "title", "cleanup": [ { "number": true } ] }
+      }
+    }
+  },
+
+  "details": {
+    "plot":   { "using": "css", "select": "meta[property=\"og:description\"]", "take": "content" },
+    "year":   { "using": "css", "select": "h1.title", "cleanup": [ { "replace": "^.*?\\b((?:19|20)\\d\\d)\\b.*$", "with": "$1" } ] },
+    "genres": { "using": "css", "select": ".single_tax a[href*=\"/genre/\"]" },
+    "poster": { "using": "css", "select": "meta[property=\"og:image\"]", "take": "content" }
+  },
+
+  "play": {
+    "qualitiesSteps": [
+      { "request": { "path": "{link}" },
+        "extract": { "using": "css", "select": "ul.eplist2 li.active a, ul.eplist2 li:only-child a", "take": "href" },
+        "as": "episode" },
+      { "request": { "path": "{episode}" },
+        "extract": { "using": "css", "select": "form:has(input[name=epwatch])", "take": "action", "cleanup": [ { "replace": "/+$", "with": "" } ] },
+        "as": "backend",
+        "keep": { "epwatch": { "using": "css", "select": "input[name=epwatch]", "take": "value" } } },
+      { "request": { "path": "{backend}/wp-admin/admin-ajax.php?action=fetch_episode&id={epwatch}",
+                     "headers": { "Referer": "{backend}/", "X-Requested-With": "XMLHttpRequest" } } }
+    ],
+    "qualities": {
+      "each": { "using": "json", "path": "servers[*]" },
+      "fields": {
+        "label": { "using": "json", "path": "key" },
+        "link":  { "using": "json", "path": "value", "cleanup": [
+          { "replace": "(?is)^.*?src=[\"']([^\"']+)[\"'].*$", "with": "$1" },
+          { "replace": "^//", "with": "https://" } ] },
+        "source": { "using": "json", "path": "key", "cleanup": [ { "trim": true }, { "map": { "VEO": "VOE" } } ] },
+        "resolver": { "using": "json", "path": "key", "cleanup": [
+          { "map": { "DoodStream": "doodstream", "Ok.ru": "okru", "VidMoly": "vidmoly", "Vidmoly": "vidmoly",
+                     "LuluVdo": "streamwish", "EarnVids": "streamwish", "StreamHG": "streamhg", "VEO": "voe", "VOE": "voe" } } ] }
+      }
+    },
+    "resolve": [],
+    "sources": {
+      "each": { "using": "css", "select": "video source[src]" },
+      "fields": { "url": { "using": "css", "take": "src" } }
+    },
+    "playHeaders": { "Referer": "{origin}/" }
+  },
+
+  "test": { "search": "love" }
+}
