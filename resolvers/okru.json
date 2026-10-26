@@ -1,0 +1,21 @@
+{
+  "format": 1,
+  "id": "okru",
+  "name": "Ok.ru",
+  "version": "1.0.0",
+  "hosts": ["ok.ru", "*.ok.ru"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on an AsiaTVDrama embed (ok.ru/videoembed/ID). The embed page carries its player settings as JSON in a data-options attribute; flashvars.metadata.hlsManifestUrl is the HLS playlist (on okcdn.ru). HTML attribute holding JSON, no API, nothing packed.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } } }
+  ],
+  "sources": {
+    "each": { "using": "json", "path": "flashvars.metadata",
+              "within": { "using": "css", "select": "[data-options]", "take": "data-options" } },
+    "fields": { "url": { "using": "json", "path": "hlsManifestUrl" } }
+  },
+  "playHeaders": { "Referer": "{origin}/", "Origin": "{origin}" },
+  "test": { "link": "https://ok.ru/videoembed/16273940744877" }
+}
