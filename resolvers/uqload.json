@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "id": "uqload",
+  "name": "Uqload",
+  "version": "1.0.0",
+  "hosts": ["uqload.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on an EgyDead mirror (uqload.vc/embed-ID.html; the site has also used .cx, .to, .net, .co, .ws, .bz). The page holds one packed script which, unpacked, is a jwplayer setup naming the HLS playlist in sources: [{file:\"…m3u8\"}] on a strmN.uqload.* server. The first https m3u8 address in it is played. HTML (a packed script), no API.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } } }
+  ],
+  "sources": {
+    "each": { "using": "regex", "pattern": "eval\\(function\\(p,a,c,k,e,d\\).*?\\.split\\('\\|'\\).*?\\)\\)" },
+    "fields": { "url": { "using": "regex",
+                         "pattern": "(eval\\(function\\(p,a,c,k,e,d\\).*?\\.split\\('\\|'\\).*?\\)\\))",
+                         "cleanup": [ { "unpack": true },
+                                      { "replace": "(?s)^.*?[\"'](https?://[^\"']+?\\.m3u8[^\"']*)[\"'].*$", "with": "$1" } ] } }
+  },
+  "playHeaders": { "Referer": "{origin}/", "Origin": "{origin}" },
+  "test": { "link": "https://uqload.vc/embed-gmb1mjdjnk8g.html" }
+}
