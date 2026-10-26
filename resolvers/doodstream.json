@@ -2,12 +2,12 @@
   "format": 1,
   "id": "doodstream",
   "name": "DoodStream",
-  "version": "1.0.1",
-  "hosts": ["doodstream.*", "dood.*", "dsvplay.*", "playmogo.*", "d000d.*", "ds2play.*", "doodcdn.*"],
+  "version": "1.0.2",
+  "hosts": ["doodstream.*", "dood.*", "dsvplay.*", "playmogo.*", "d000d.*", "ds2play.*", "doodcdn.*", "do7go.*"],
   "headers": {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
-  "notes": "Checked 2026-10-25 on an Arabseed embed (doodstream.com/e/ID, which redirects to playmogo.com). API: the embed page names /pass_md5/…, which answers with the start of the video address; the page adds 10 random letters, ?token=…&expiry= and the time in milliseconds. Sahra uses fixed letters (the server does not check them). The page's Turnstile only guards an analytics call.",
+  "notes": "Checked 2026-10-25 on an Arabseed embed (doodstream.com/e/ID, which redirects to playmogo.com). API: the embed page names /pass_md5/…, which answers with the start of the video address; the page adds 10 random letters, ?token=…&expiry= and the time in milliseconds. Sahra uses fixed letters (the server does not check them). The page's Turnstile only guards an analytics call. 2026-10-26: Fajer Show also links do7go.com/e/ID, which redirects to playmogo.com the same way; dsvplay.com did not resolve (DNS) from here, and its /d/ pages are a download page with no pass_md5 (the embed is /e/).",
   "steps": [
     { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
       "extract": { "using": "regex", "pattern": "\\$\\.get\\('(/pass_md5/[^']+)'" },
