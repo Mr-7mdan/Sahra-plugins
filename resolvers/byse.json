@@ -1,0 +1,29 @@
+{
+  "format": 2,
+  "id": "byse",
+  "name": "BySE (FileMoon)",
+  "version": "1.0.0",
+  "hosts": ["bysefujedu.*", "filemoon.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on AsiaTVDrama embeds (bysefujedu.com/e/CODE, filemoon.sx/e/CODE and filemoon.to/e/CODE: one backend, “Byse Frontend”). The embed page is an empty app shell; its player asks the API /api/videos/CODE, which answers the stream list encrypted (AES-256-GCM, the key in parts chosen by a version number). Sahra's built-in “byse” decode undoes it and reads sources[].url, an HLS playlist signed for the device that asked (about 15 minutes), so it is read at Play time only. API, nothing scraped from HTML.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
+      "extract": { "using": "redirect", "cleanup": [
+        { "replace": "^https?://[^/]+/(?:(?:e|d|f|v|embed)/)?([A-Za-z0-9]+).*$", "with": "$1" } ] },
+      "as": "code" },
+    { "request": { "path": "/api/videos/{code}",
+                   "headers": { "Referer": "{origin}/e/{code}", "Accept": "application/json, text/plain, */*" } } }
+  ],
+  "sources": {
+    "each": { "using": "json", "path": "sources[*]",
+              "within": { "using": "json", "path": "playback", "cleanup": [ { "decode": "byse" } ] } },
+    "fields": {
+      "url": { "using": "json", "path": "url" },
+      "label": { "using": "json", "path": "label" }
+    }
+  },
+  "playHeaders": { "Referer": "{origin}/", "Origin": "{origin}" },
+  "test": { "link": "https://bysefujedu.com/e/5a39g25um39k" }
+}
