@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "id": "vidara",
+  "name": "Vidara",
+  "version": "1.0.0",
+  "hosts": ["vidara.*"],
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
+  },
+  "notes": "Checked 2026-10-26 on AsiaTVDrama embeds (vidara.to/e/CODE); EgyDead lists Vidara too. The embed page is a player shell; its script posts {filecode, device} as JSON to /api/stream, which answers the HLS playlist as streaming_url (signed for the address that asked, so it is read at Play time only). API, nothing scraped from HTML.",
+  "steps": [
+    { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
+      "extract": { "using": "redirect", "cleanup": [
+        { "replace": "^https?://[^/]+/(?:(?:e|d|f|v|embed)/)?([A-Za-z0-9]+).*$", "with": "$1" } ] },
+      "as": "code" },
+    { "request": { "method": "POST", "path": "/api/stream",
+                   "headers": { "Referer": "{origin}/e/{code}", "Origin": "{origin}", "Accept": "application/json, text/plain, */*" },
+                   "body": { "type": "json", "value": { "filecode": "{code}", "device": "web" } } },
+      "extract": { "using": "json", "path": "streaming_url" } }
+  ],
+  "playHeaders": { "Referer": "{origin}/", "Origin": "{origin}" },
+  "test": { "link": "https://vidara.to/e/5vNnvc7oXlTMF" }
+}
