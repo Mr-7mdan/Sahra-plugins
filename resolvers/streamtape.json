@@ -2,17 +2,17 @@
   "format": 1,
   "id": "streamtape",
   "name": "Streamtape",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "hosts": ["streamtape.*", "strtape.*", "streamta.pe"],
   "headers": {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Safari/605.1.15"
   },
-  "notes": "Checked 2026-10-26 on a Fajer Show embed (streamtape.com/e/ID; AsiaTVDrama's Streamtape servers are on older titles, and the two found today were deleted). The embed page hides the video address in elements (#botlink, #robotlink…) whose HTML holds decoy tokens; a script then writes the real one into them, as two strings joined after cutting a few letters off the second (“'//streamta' + ('xyzape.com/get_video?…').substring(4)”). The letters cut are only the host's, so Sahra reads the get_video?… part of the first such script line, adds &stream=1 as the page's player does, and opens it on the embed's own host; it redirects to the mp4 on tapecontent.net. HTML (a script string), no API, nothing executed.",
+  "notes": "Checked 2026-10-26 on a Fajer Show embed (streamtape.com/e/ID; AsiaTVDrama's Streamtape servers are on older titles, and the two found today were deleted). The embed page hides the video address in elements (#botlink, #robotlink…) whose HTML holds decoy tokens; a script then writes the real one into them, as two strings joined after cutting a few letters off the second (“'//streamta' + ('xyzape.com/get_video?…').substring(4)”). Where the cut falls moves on every load: on 2026-10-26 it was also inside or just after get_video (“'//streamtape.com/get' + ('xcd_video?id=…').substring(3)”, “'…/get_vide' + ('xyzao?id=…').substring(4)”). Every one seen kept id=… whole in the second string, so Sahra reads the id=… part (to the string's end) of the first such script line, writes /get_video? in front and &stream=1 after, as the page's player does, and opens it on the embed's own host; it redirects to the mp4 on tapecontent.net. HTML (a script string), no API, nothing executed.",
   "steps": [
     { "request": { "path": "{link}", "headers": { "Referer": "{link}" } },
       "extract": { "using": "regex",
-                   "pattern": "getElementById\\(\\s*['\"]\\w*link['\"]\\s*\\)\\.innerHTML\\s*=[^;]*?(get_video\\?[^'\"]+)['\"]",
-                   "cleanup": [ { "replace": "^(.*)$", "with": "/$1&stream=1" },
+                   "pattern": "getElementById\\(\\s*['\"]\\w*link['\"]\\s*\\)\\.innerHTML\\s*=[^;]*?(id=[^'\"]+)['\"]",
+                   "cleanup": [ { "replace": "^(.*)$", "with": "/get_video?$1&stream=1" },
                                 { "absolute": true } ] } }
   ],
   "playHeaders": { "Referer": "{origin}/" },
