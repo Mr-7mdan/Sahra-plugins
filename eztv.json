@@ -1,0 +1,47 @@
+{
+  "format": 1,
+  "kind": "indexer",
+  "id": "eztv",
+  "name": "EZTV",
+  "version": "1.0.0",
+  "mediaTypes": [
+    "tvShow"
+  ],
+  "query": {
+    "tvShow": {
+      "steps": [
+        {
+          "request": {
+            "path": "https://eztvx.to/api/get-torrents?imdb_id={imdbNumeric}&limit=100"
+          },
+          "extract": {
+            "using": "json",
+            "path": "torrents[*]"
+          }
+        }
+      ]
+    }
+  },
+  "row": {
+    "infoHash": {
+      "using": "json",
+      "path": "hash"
+    },
+    "name": {
+      "using": "json",
+      "path": "title"
+    },
+    "sizeBytes": {
+      "using": "json",
+      "path": "size_bytes"
+    },
+    "seeders": {
+      "using": "json",
+      "path": "seeds"
+    }
+  },
+  "match": {
+    "titleYear": true,
+    "episodeTag": true
+  }
+}
