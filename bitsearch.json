@@ -1,0 +1,94 @@
+{
+  "format": 1,
+  "kind": "indexer",
+  "id": "bitsearch",
+  "name": "BitSearch",
+  "version": "1.0.0",
+  "mediaTypes": [
+    "movie",
+    "tvShow"
+  ],
+  "query": {
+    "movie": {
+      "steps": [
+        {
+          "request": {
+            "path": "https://bitsearch.to/search?q={query}%20{year}"
+          },
+          "extract": {
+            "using": "css",
+            "select": "div.torrent-result-card"
+          }
+        }
+      ]
+    },
+    "tvShow": {
+      "steps": [
+        {
+          "request": {
+            "path": "https://bitsearch.to/search?q={query}"
+          },
+          "extract": {
+            "using": "css",
+            "select": "div.torrent-result-card"
+          }
+        }
+      ]
+    }
+  },
+  "row": {
+    "infoHash": {
+      "using": "regex",
+      "pattern": "btih:([A-Fa-f0-9]{40})",
+      "group": 1
+    },
+    "name": {
+      "using": "css",
+      "select": "h3 a",
+      "cleanup": [
+        {
+          "decode": "html"
+        },
+        {
+          "trim": true
+        }
+      ]
+    },
+    "sizeBytes": {
+      "using": "regex",
+      "pattern": "<span>([0-9.]+\\s*[KMGT]B)</span>",
+      "group": 1,
+      "cleanup": [
+        {
+          "replace": "^(\\d+)\\s*([KMGT]B)$",
+          "with": "$1.0 $2"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*TB$",
+          "with": "$1$200000000000"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*GB$",
+          "with": "$1$200000000"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*MB$",
+          "with": "$1$200000"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*KB$",
+          "with": "$1$200"
+        }
+      ]
+    },
+    "seeders": {
+      "using": "regex",
+      "pattern": "font-medium\">(\\d+)</span>\\s*<span>seeders",
+      "group": 1
+    }
+  },
+  "match": {
+    "titleYear": true,
+    "episodeTag": true
+  }
+}
