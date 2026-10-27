@@ -1,0 +1,95 @@
+{
+  "format": 1,
+  "kind": "indexer",
+  "id": "knaben",
+  "name": "Knaben (meta-search)",
+  "version": "1.0.0",
+  "mediaTypes": [
+    "movie",
+    "tvShow"
+  ],
+  "query": {
+    "movie": {
+      "steps": [
+        {
+          "request": {
+            "method": "POST",
+            "path": "https://api.knaben.org/v1",
+            "body": {
+              "type": "json",
+              "value": {
+                "search_type": "100%",
+                "search_field": "title",
+                "query": "{query} {year}",
+                "order_by": "seeders",
+                "order_direction": "desc",
+                "from": 0,
+                "size": 100,
+                "hide_unsafe": true,
+                "categories": [
+                  3000000
+                ]
+              }
+            }
+          },
+          "extract": {
+            "using": "json",
+            "path": "hits[*]"
+          }
+        }
+      ]
+    },
+    "tvShow": {
+      "steps": [
+        {
+          "request": {
+            "method": "POST",
+            "path": "https://api.knaben.org/v1",
+            "body": {
+              "type": "json",
+              "value": {
+                "search_type": "100%",
+                "search_field": "title",
+                "query": "{query}",
+                "order_by": "seeders",
+                "order_direction": "desc",
+                "from": 0,
+                "size": 100,
+                "hide_unsafe": true,
+                "categories": [
+                  2000000
+                ]
+              }
+            }
+          },
+          "extract": {
+            "using": "json",
+            "path": "hits[*]"
+          }
+        }
+      ]
+    }
+  },
+  "row": {
+    "infoHash": {
+      "using": "json",
+      "path": "hash"
+    },
+    "name": {
+      "using": "json",
+      "path": "title"
+    },
+    "sizeBytes": {
+      "using": "json",
+      "path": "bytes"
+    },
+    "seeders": {
+      "using": "json",
+      "path": "seeders"
+    }
+  },
+  "match": {
+    "titleYear": true,
+    "episodeTag": true
+  }
+}
