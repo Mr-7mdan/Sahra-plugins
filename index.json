@@ -56,6 +56,41 @@
       "version": "1.0.0",
       "file": "apibay.json",
       "kind": "indexer"
+    },
+    {
+      "id": "yts",
+      "name": "YTS",
+      "version": "1.0.0",
+      "file": "yts.json",
+      "kind": "indexer"
+    },
+    {
+      "id": "eztv",
+      "name": "EZTV",
+      "version": "1.0.0",
+      "file": "eztv.json",
+      "kind": "indexer"
+    },
+    {
+      "id": "knaben",
+      "name": "Knaben (meta-search)",
+      "version": "1.0.0",
+      "file": "knaben.json",
+      "kind": "indexer"
+    },
+    {
+      "id": "nyaa",
+      "name": "Nyaa (anime)",
+      "version": "1.0.0",
+      "file": "nyaa.json",
+      "kind": "indexer"
+    },
+    {
+      "id": "bitsearch",
+      "name": "BitSearch",
+      "version": "1.0.0",
+      "file": "bitsearch.json",
+      "kind": "indexer"
     }
   ],
   "resolvers": [
