@@ -49,6 +49,13 @@
       "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
       "file": "egydead.json",
       "language": "ar"
+    },
+    {
+      "id": "apibay",
+      "name": "apibay (The Pirate Bay)",
+      "version": "1.0.0",
+      "file": "apibay.json",
+      "kind": "indexer"
     }
   ],
   "resolvers": [
