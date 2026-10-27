@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "kind": "indexer",
+  "id": "yts",
+  "name": "YTS",
+  "version": "1.0.0",
+  "mediaTypes": [
+    "movie"
+  ],
+  "query": {
+    "movie": {
+      "steps": [
+        {
+          "request": {
+            "path": "https://movies-api.accel.li/api/v2/list_movies.json?query_term={imdb}&limit=50"
+          },
+          "extract": {
+            "using": "json",
+            "path": "data.movies[*].torrents[*]"
+          }
+        }
+      ]
+    }
+  },
+  "row": {
+    "infoHash": {
+      "using": "json",
+      "path": "hash"
+    },
+    "name": {
+      "using": "regex",
+      "pattern": "\"title_long\":\"([^\"]*)\".*\"quality\":\"([^\"]*)\".*\"type\":\"([^\"]*)\"",
+      "cleanup": [
+        {
+          "replace": "\"title_long\":\"([^\"]*)\".*\"quality\":\"([^\"]*)\".*\"type\":\"([^\"]*)\"",
+          "with": "$1 $2 $3"
+        }
+      ]
+    },
+    "sizeBytes": {
+      "using": "json",
+      "path": "size_bytes"
+    },
+    "seeders": {
+      "using": "json",
+      "path": "seeds"
+    }
+  },
+  "match": {
+    "titleYear": true,
+    "episodeTag": false
+  }
+}
