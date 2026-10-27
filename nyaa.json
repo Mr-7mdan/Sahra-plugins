@@ -1,0 +1,103 @@
+{
+  "format": 1,
+  "kind": "indexer",
+  "id": "nyaa",
+  "name": "Nyaa (anime)",
+  "version": "1.0.0",
+  "mediaTypes": [
+    "movie",
+    "tvShow"
+  ],
+  "query": {
+    "movie": {
+      "steps": [
+        {
+          "request": {
+            "path": "https://nyaa.si/?page=rss&q={query}&c=1_2&f=0"
+          },
+          "extract": {
+            "using": "regex",
+            "pattern": "<item>.*?</item>"
+          }
+        }
+      ]
+    },
+    "tvShow": {
+      "steps": [
+        {
+          "request": {
+            "path": "https://nyaa.si/?page=rss&q={query}&c=1_2&f=0"
+          },
+          "extract": {
+            "using": "regex",
+            "pattern": "<item>.*?</item>"
+          }
+        }
+      ]
+    }
+  },
+  "row": {
+    "infoHash": {
+      "using": "regex",
+      "pattern": "<nyaa:infoHash>([a-fA-F0-9]{40})</nyaa:infoHash>"
+    },
+    "name": {
+      "using": "regex",
+      "pattern": "<title>(.*?)</title>",
+      "cleanup": [
+        {
+          "decode": "html"
+        },
+        {
+          "trim": true
+        }
+      ]
+    },
+    "sizeBytes": {
+      "using": "regex",
+      "pattern": "<nyaa:size>(.*?)</nyaa:size>",
+      "cleanup": [
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*TiB$",
+          "with": "$1$2T"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*GiB$",
+          "with": "$1$2G"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*MiB$",
+          "with": "$1$2M"
+        },
+        {
+          "replace": "^(\\d+)\\.(\\d)\\d*\\s*KiB$",
+          "with": "$1$2K"
+        },
+        {
+          "replace": "T$",
+          "with": "00000000000"
+        },
+        {
+          "replace": "G$",
+          "with": "00000000"
+        },
+        {
+          "replace": "M$",
+          "with": "00000"
+        },
+        {
+          "replace": "K$",
+          "with": "00"
+        }
+      ]
+    },
+    "seeders": {
+      "using": "regex",
+      "pattern": "<nyaa:seeders>(\\d+)</nyaa:seeders>"
+    }
+  },
+  "match": {
+    "titleYear": true,
+    "episodeTag": true
+  }
+}
