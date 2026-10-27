@@ -1,0 +1,25 @@
+{
+  "format": 1,
+  "kind": "indexer",
+  "id": "apibay",
+  "name": "apibay (The Pirate Bay)",
+  "version": "1.0.0",
+  "mediaTypes": ["movie", "tvShow"],
+  "query": {
+    "movie": { "steps": [
+      { "request": { "path": "https://apibay.org/q.php?q={query}&cat=200" },
+        "extract": { "using": "json", "path": "[*]" } }
+    ] },
+    "tvShow": { "steps": [
+      { "request": { "path": "https://apibay.org/q.php?q={query}&cat=200" },
+        "extract": { "using": "json", "path": "[*]" } }
+    ] }
+  },
+  "row": {
+    "infoHash": { "using": "json", "path": "info_hash" },
+    "name": { "using": "json", "path": "name" },
+    "sizeBytes": { "using": "json", "path": "size" },
+    "seeders": { "using": "json", "path": "seeders" }
+  },
+  "match": { "titleYear": true, "episodeTag": true }
+}
