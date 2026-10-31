@@ -2,7 +2,7 @@
   "format": 2,
   "id": "egydead",
   "name": "EgyDead",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "language": "ar",
   "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
 
@@ -105,7 +105,7 @@
   "play": {
     "qualitiesSteps": [
       { "request": { "path": "{link}watch/" },
-        "extract": { "using": "css", "select": "ul.serversList li[data-link*=\"/iframe/\"]", "take": "data-link" },
+        "extract": { "using": "css", "select": "li[data-link*=\"/iframe/\"]", "take": "data-link" },
         "as": "player" },
       { "request": { "path": "{player}", "headers": { "Referer": "{address}/" } },
         "extract": { "using": "json", "path": "version",
