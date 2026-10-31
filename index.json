@@ -5,7 +5,7 @@
     {
       "id": "akwam",
       "name": "Akwam",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "icon": "https://akwam.ss/files/social_logo.png",
       "file": "akwam.json",
       "language": "ar"
@@ -21,7 +21,7 @@
     {
       "id": "arabseed",
       "name": "ArabSeed",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "icon": "https://arabseeds.watch/wp-content/uploads/2026/07/cropped-arbb-192x192.png",
       "file": "arabseed.json",
       "language": "ar"
@@ -37,7 +37,7 @@
     {
       "id": "faselhd",
       "name": "FaselHD",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "icon": "https://static.faselhdcdn.com/wp-content/themes/faselhd_2020/images/favicon.png",
       "file": "faselhd.json",
       "language": "ar"
@@ -45,214 +45,26 @@
     {
       "id": "egydead",
       "name": "EgyDead",
-      "version": "1.0.7",
+      "version": "1.0.8",
       "icon": "https://tv10.egydead.live/wp-content/uploads/2019/01/cropped-yXYdE2f-192x192.png",
       "file": "egydead.json",
       "language": "ar"
-    },
-    {
-      "id": "apibay",
-      "name": "apibay (The Pirate Bay)",
-      "version": "1.0.0",
-      "file": "apibay.json",
-      "kind": "indexer"
-    },
-    {
-      "id": "yts",
-      "name": "YTS",
-      "version": "1.0.0",
-      "file": "yts.json",
-      "kind": "indexer"
-    },
-    {
-      "id": "eztv",
-      "name": "EZTV",
-      "version": "1.0.0",
-      "file": "eztv.json",
-      "kind": "indexer"
-    },
-    {
-      "id": "knaben",
-      "name": "Knaben (meta-search)",
-      "version": "1.0.0",
-      "file": "knaben.json",
-      "kind": "indexer"
-    },
-    {
-      "id": "nyaa",
-      "name": "Nyaa (anime)",
-      "version": "1.0.0",
-      "file": "nyaa.json",
-      "kind": "indexer"
-    },
-    {
-      "id": "bitsearch",
-      "name": "BitSearch",
-      "version": "1.0.0",
-      "file": "bitsearch.json",
-      "kind": "indexer"
     }
   ],
   "resolvers": [
-    {
-      "id": "doodstream",
-      "name": "DoodStream",
-      "version": "1.0.2",
-      "file": "resolvers/doodstream.json",
-      "hosts": [
-        "doodstream.*",
-        "dood.*",
-        "dsvplay.*",
-        "playmogo.*",
-        "d000d.*",
-        "ds2play.*",
-        "doodcdn.*",
-        "do7go.*"
-      ]
-    },
-    {
-      "id": "mixdrop",
-      "name": "Mixdrop",
-      "version": "1.0.1",
-      "file": "resolvers/mixdrop.json",
-      "hosts": [
-        "mixdrop.*",
-        "*.mixdrop.*",
-        "mxdrop.*",
-        "m1xdrop.*",
-        "mixdrp.*"
-      ]
-    },
-    {
-      "id": "okru",
-      "name": "Ok.ru",
-      "version": "1.0.0",
-      "file": "resolvers/okru.json",
-      "hosts": [
-        "ok.ru",
-        "*.ok.ru"
-      ]
-    },
-    {
-      "id": "vidmoly",
-      "name": "VidMoly",
-      "version": "1.0.0",
-      "file": "resolvers/vidmoly.json",
-      "hosts": [
-        "vidmoly.*"
-      ]
-    },
-    {
-      "id": "streamwish",
-      "name": "StreamWish (LuluVdo, EarnVids)",
-      "version": "1.0.2",
-      "file": "resolvers/streamwish.json",
-      "hosts": [
-        "streamwish.*",
-        "luluvido.*",
-        "luluvdoo.*",
-        "luluvdo.*",
-        "luluvid.*",
-        "vidhide.*",
-        "vidhidepre.*",
-        "vidhidevip.*",
-        "vidhidepro.*",
-        "vidhidehub.*",
-        "vidhidefast.*"
-      ]
-    },
-    {
-      "id": "streamhg",
-      "name": "StreamHG",
-      "version": "1.0.0",
-      "file": "resolvers/streamhg.json",
-      "hosts": [
-        "streamhg.*",
-        "hgcloud.*",
-        "hglink.*",
-        "dhcplay.*",
-        "audinifer.*"
-      ]
-    },
-    {
-      "id": "voe",
-      "name": "VOE",
-      "version": "1.0.0",
-      "file": "resolvers/voe.json",
-      "hosts": [
-        "voe.*"
-      ]
-    },
-    {
-      "id": "uqload",
-      "name": "Uqload",
-      "version": "1.0.0",
-      "file": "resolvers/uqload.json",
-      "hosts": [
-        "uqload.*"
-      ]
-    },
-    {
-      "id": "vk",
-      "name": "VK",
-      "version": "1.0.0",
-      "file": "resolvers/vk.json",
-      "hosts": [
-        "vk.com",
-        "*.vk.com",
-        "vkvideo.ru",
-        "*.vkvideo.ru",
-        "vk.ru",
-        "*.vk.ru"
-      ]
-    },
-    {
-      "id": "byse",
-      "name": "BySE (FileMoon)",
-      "version": "1.0.0",
-      "file": "resolvers/byse.json",
-      "hosts": [
-        "bysefujedu.*",
-        "filemoon.*"
-      ]
-    },
-    {
-      "id": "streamtape",
-      "name": "Streamtape",
-      "version": "1.0.1",
-      "file": "resolvers/streamtape.json",
-      "hosts": [
-        "streamtape.*",
-        "strtape.*",
-        "streamta.pe"
-      ]
-    },
-    {
-      "id": "vidara",
-      "name": "Vidara",
-      "version": "1.0.0",
-      "file": "resolvers/vidara.json",
-      "hosts": [
-        "vidara.*"
-      ]
-    },
-    {
-      "id": "vinovo",
-      "name": "Vinovo",
-      "version": "1.0.0",
-      "file": "resolvers/vinovo.json",
-      "hosts": [
-        "vinovo.*"
-      ]
-    },
-    {
-      "id": "bigwarp",
-      "name": "BigWarp",
-      "version": "1.0.0",
-      "file": "resolvers/bigwarp.json",
-      "hosts": [
-        "bigwarp.*"
-      ]
-    }
+    { "id": "doodstream", "name": "DoodStream", "version": "1.0.2", "file": "resolvers/doodstream.json", "hosts": ["doodstream.*", "dood.*", "dsvplay.*", "playmogo.*", "d000d.*", "ds2play.*", "doodcdn.*", "do7go.*"] },
+    { "id": "mixdrop", "name": "Mixdrop", "version": "1.0.1", "file": "resolvers/mixdrop.json", "hosts": ["mixdrop.*", "*.mixdrop.*", "mxdrop.*", "m1xdrop.*", "mixdrp.*"] },
+    { "id": "okru", "name": "Ok.ru", "version": "1.0.0", "file": "resolvers/okru.json", "hosts": ["ok.ru", "*.ok.ru"] },
+    { "id": "vidmoly", "name": "VidMoly", "version": "1.0.0", "file": "resolvers/vidmoly.json", "hosts": ["vidmoly.*"] },
+    { "id": "streamwish", "name": "StreamWish (LuluVdo, EarnVids)", "version": "1.0.2", "file": "resolvers/streamwish.json", "hosts": ["streamwish.*", "luluvido.*", "luluvdoo.*", "luluvdo.*", "luluvid.*", "vidhide.*", "vidhidepre.*", "vidhidevip.*", "vidhidepro.*", "vidhidehub.*", "vidhidefast.*"] },
+    { "id": "streamhg", "name": "StreamHG", "version": "1.0.0", "file": "resolvers/streamhg.json", "hosts": ["streamhg.*", "hgcloud.*", "hglink.*", "dhcplay.*", "audinifer.*"] },
+    { "id": "voe", "name": "VOE", "version": "1.0.0", "file": "resolvers/voe.json", "hosts": ["voe.*"] },
+    { "id": "uqload", "name": "Uqload", "version": "1.0.0", "file": "resolvers/uqload.json", "hosts": ["uqload.*"] },
+    { "id": "vk", "name": "VK", "version": "1.0.0", "file": "resolvers/vk.json", "hosts": ["vk.com", "*.vk.com", "vkvideo.ru", "*.vkvideo.ru", "vk.ru", "*.vk.ru"] },
+    { "id": "byse", "name": "BySE (FileMoon)", "version": "1.0.0", "file": "resolvers/byse.json", "hosts": ["bysefujedu.*", "filemoon.*"] },
+    { "id": "streamtape", "name": "Streamtape", "version": "1.0.1", "file": "resolvers/streamtape.json", "hosts": ["streamtape.*", "strtape.*", "streamta.pe"] },
+    { "id": "vidara", "name": "Vidara", "version": "1.0.0", "file": "resolvers/vidara.json", "hosts": ["vidara.*"] },
+    { "id": "vinovo", "name": "Vinovo", "version": "1.0.0", "file": "resolvers/vinovo.json", "hosts": ["vinovo.*"] },
+    { "id": "bigwarp", "name": "BigWarp", "version": "1.0.0", "file": "resolvers/bigwarp.json", "hosts": ["bigwarp.*"] }
   ]
 }
