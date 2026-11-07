@@ -2,11 +2,11 @@
   "format": 2,
   "id": "faselhd",
   "name": "FaselHD",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "language": "ar",
   "icon": "https://static.faselhdcdn.com/wp-content/themes/faselhd_2020/images/favicon.png",
-  "address": "https://web10260x.faselhdx.life",
-  "fallbackAddresses": [],
+  "address": "https://web103112x.faselhdx.life",
+  "fallbackAddresses": ["https://web10260x.faselhdx.life"],
   "addressFinder": {
     "probe": {
       "address": "https://web{n}x.faselhdx.life",
@@ -28,7 +28,8 @@
       "id": "recent",
       "title": "Recently Added",
       "titleAr": "المضاف حديثا",
-      "path": "/most_recent/page/{page}"
+      "path": "/most_recent/page/{page}",
+      "kind": "mixed"
     },
     {
       "id": "movies",
